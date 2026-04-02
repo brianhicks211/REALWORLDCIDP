@@ -1,824 +1,1742 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <title>CIDP Clinical Needs Assessment</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CIDP Clinical Needs Assessment | Elite Module</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,1,0" rel="stylesheet" />
   <style>
     :root {
-      --rwce-blue: #2563eb;
-      --rwce-indigo: #3730a3;
-      --rwce-slate: #0f172a;
-      --rwce-soft: #eff6ff;
-      --elite-shadow: 0 24px 80px rgba(15, 23, 42, 0.12);
-      --elite-soft-shadow: 0 16px 44px rgba(15, 23, 42, 0.08);
+      --bg-1: #020617;
+      --bg-2: #0f172a;
+      --bg-3: #111827;
+      --line: rgba(148, 163, 184, 0.18);
+      --line-strong: rgba(148, 163, 184, 0.28);
+      --panel: rgba(255, 255, 255, 0.74);
+      --panel-strong: rgba(255, 255, 255, 0.9);
+      --shadow: 0 20px 60px rgba(2, 6, 23, 0.18);
+      --blue: #2563eb;
+      --indigo: #4f46e5;
+      --sky: #38bdf8;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --amber: #d97706;
+      --glass-blur: blur(22px);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 18px;
     }
+
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
       font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      color: #0f172a;
       background:
-        radial-gradient(circle at top left, rgba(56,189,248,0.14), transparent 28%),
-        radial-gradient(circle at top right, rgba(99,102,241,0.18), transparent 34%),
-        radial-gradient(circle at bottom center, rgba(37,99,235,0.08), transparent 40%),
-        linear-gradient(180deg, #f8fbff 0%, #f3f7fd 42%, #eef3fa 100%);
-      position: relative;
-      isolation: isolate;
-    }
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(148,163,184,0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(148,163,184,0.06) 1px, transparent 1px);
-      background-size: 42px 42px;
-      mask-image: radial-gradient(circle at center, black 32%, transparent 88%);
-      pointer-events: none;
-      z-index: -2;
-    }
-    .ambient-bg {
-      position: fixed;
-      inset: 0;
+        radial-gradient(circle at 8% 10%, rgba(56, 189, 248, 0.16), transparent 24%),
+        radial-gradient(circle at 86% 12%, rgba(79, 70, 229, 0.18), transparent 26%),
+        radial-gradient(circle at 50% 100%, rgba(37, 99, 235, 0.10), transparent 34%),
+        linear-gradient(180deg, #f8fbff 0%, #f4f8ff 40%, #eef4fb 100%);
       overflow: hidden;
-      pointer-events: none;
-      z-index: -1;
     }
+
+    .bg-orbs {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
     .orb {
       position: absolute;
-      border-radius: 9999px;
-      filter: blur(18px);
-      opacity: .6;
-      animation: floatOrb 14s ease-in-out infinite;
+      border-radius: 999px;
+      filter: blur(80px);
+      opacity: 0.35;
+      animation: floatOrb 16s ease-in-out infinite;
+      mix-blend-mode: screen;
     }
-    .orb-1 { width: 18rem; height: 18rem; top: -5rem; left: -3rem; background: rgba(56,189,248,.18); }
-    .orb-2 { width: 22rem; height: 22rem; top: 10%; right: -8rem; background: rgba(99,102,241,.16); animation-delay: -5s; }
-    .orb-3 { width: 16rem; height: 16rem; bottom: -5rem; left: 20%; background: rgba(37,99,235,.14); animation-delay: -9s; }
+
+    .orb.one {
+      width: 22rem;
+      height: 22rem;
+      left: -4rem;
+      top: -3rem;
+      background: rgba(56, 189, 248, 0.42);
+    }
+
+    .orb.two {
+      width: 24rem;
+      height: 24rem;
+      right: -8rem;
+      top: 6rem;
+      background: rgba(99, 102, 241, 0.32);
+      animation-delay: -5s;
+    }
+
+    .orb.three {
+      width: 20rem;
+      height: 20rem;
+      left: 24%;
+      bottom: -8rem;
+      background: rgba(37, 99, 235, 0.24);
+      animation-delay: -9s;
+    }
+
     @keyframes floatOrb {
-      0%,100% { transform: translate3d(0,0,0) scale(1); }
-      50% { transform: translate3d(0,-14px,0) scale(1.05); }
+      0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(0, -18px, 0) scale(1.06); }
     }
-    .custom-scroll::-webkit-scrollbar { width: 8px; }
-    .custom-scroll::-webkit-scrollbar-track { background: transparent; }
-    .custom-scroll::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 999px; }
-    .fade-in { animation: fadeIn 0.35s ease-out forwards; }
-    .slide-up { animation: slideUp 0.42s ease-out forwards; }
-    .scale-in { animation: scaleIn 0.24s ease-out forwards; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes slideUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes scaleIn { from { opacity: 0; transform: scale(.985); } to { opacity: 1; transform: scale(1); } }
-    .glass-cmv {
-      background: rgba(255,255,255,0.7);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid rgba(255,255,255,0.75);
-      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.06);
+
+    .glass-shell {
+      position: relative;
+      z-index: 1;
+      background: rgba(255,255,255,0.46);
+      backdrop-filter: blur(8px);
     }
+
+    .glass-header {
+      background: rgba(255,255,255,0.72);
+      backdrop-filter: var(--glass-blur);
+      border-bottom: 1px solid rgba(255,255,255,0.72);
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+    }
+
     .sidebar-shell {
-      background: linear-gradient(180deg, rgba(255,255,255,0.94) 0%, rgba(248,250,252,0.9) 100%);
-      backdrop-filter: blur(22px);
-      box-shadow: 18px 0 52px rgba(15,23,42,.08);
+      background: linear-gradient(180deg, rgba(255,255,255,0.76) 0%, rgba(255,255,255,0.90) 100%);
+      backdrop-filter: var(--glass-blur);
+      border-right: 1px solid rgba(226,232,240,0.88);
+      box-shadow: 20px 0 40px rgba(15, 23, 42, 0.04);
     }
-    .elite-sidebar-top {
-      background: linear-gradient(180deg, rgba(255,255,255,0.76) 0%, rgba(255,255,255,0.56) 100%);
-      border-bottom: 1px solid rgba(255,255,255,0.8);
+
+    .soft-panel {
+      background: var(--panel);
+      backdrop-filter: var(--glass-blur);
+      border: 1px solid rgba(255,255,255,0.78);
+      box-shadow: var(--shadow);
     }
-    .sidebar-insight-card {
-      background:
-        radial-gradient(circle at 15% 10%, rgba(125,211,252,0.2), transparent 28%),
-        radial-gradient(circle at 85% 20%, rgba(129,140,248,0.22), transparent 36%),
-        linear-gradient(135deg, #07172f 0%, #1346b0 46%, #312e81 100%);
-      box-shadow: 0 22px 52px rgba(29,78,216,.24);
-      position: relative;
-      overflow: hidden;
+
+    .soft-panel-strong {
+      background: var(--panel-strong);
+      border: 1px solid rgba(226, 232, 240, 0.88);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
     }
-    .sidebar-insight-card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(115deg, transparent 0%, rgba(255,255,255,0.08) 42%, transparent 76%);
-      pointer-events: none;
-    }
-    .fade-swap { transition: opacity 280ms ease, transform 280ms ease; will-change: opacity, transform; }
-    .swap-hidden { opacity: 0; transform: translateY(6px); pointer-events: none; }
-    .swap-visible { opacity: 1; transform: translateY(0); }
-    .buffering-overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(2,6,23,0.35); backdrop-filter: blur(2px); }
-    .spinner { width:44px; height:44px; border-radius:9999px; border:4px solid rgba(255,255,255,0.25); border-top-color: rgba(255,255,255,0.95); animation: spin 0.9s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .group\/dl:hover .tooltip-dl { opacity: 1; transform: translateY(0); }
-    .hero-panel {
-      position: relative;
-      background:
-        radial-gradient(circle at 15% 10%, rgba(125,211,252,0.22), transparent 30%),
-        radial-gradient(circle at 85% 20%, rgba(129,140,248,0.25), transparent 36%),
-        linear-gradient(135deg, #07172f 0%, #1548b8 46%, #302b72 100%);
-      box-shadow: 0 28px 82px rgba(30,64,175,.24);
-      border: 1px solid rgba(255,255,255,0.08);
-      overflow: hidden;
-    }
-    .hero-panel::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.14) 42%, transparent 74%);
-      opacity: .55;
-      pointer-events: none;
-    }
+
     .section-card {
-      background: linear-gradient(180deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.8) 100%);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(255,255,255,0.75);
-      box-shadow: var(--elite-soft-shadow);
-      transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-xl);
+      background: rgba(255,255,255,0.84);
+      border: 1px solid rgba(226,232,240,0.9);
+      box-shadow: 0 18px 48px rgba(15, 23, 42, 0.08);
+      backdrop-filter: blur(20px);
     }
-    .section-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 20px 44px rgba(15,23,42,.1);
-      border-color: rgba(191,219,254,.95);
+
+    .section-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.24), rgba(255,255,255,0));
+      pointer-events: none;
     }
-    .metric-pill {
+
+    .hero-shell {
+      position: relative;
+      overflow: hidden;
+      border-radius: 34px;
+      padding: 2rem;
+      color: white;
+      background:
+        radial-gradient(circle at 12% 16%, rgba(125, 211, 252, 0.22), transparent 18%),
+        radial-gradient(circle at 84% 14%, rgba(129, 140, 248, 0.28), transparent 24%),
+        radial-gradient(circle at 60% 100%, rgba(59, 130, 246, 0.18), transparent 30%),
+        linear-gradient(135deg, #020617 0%, #0f172a 20%, #1d4ed8 58%, #312e81 100%);
+      box-shadow: 0 34px 80px rgba(30, 64, 175, 0.24);
+      isolation: isolate;
+    }
+
+    .hero-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0.15));
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-shell > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .metric-chip {
+      display: inline-flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      border-radius: 20px;
+      padding: 0.9rem 1rem;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+    }
+
+    .metric-chip span:first-child {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: rgba(219,234,254,0.86);
+      font-weight: 700;
+    }
+
+    .metric-chip span:last-child {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .55rem .9rem;
+      border-radius: 999px;
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+    }
+
+    .eyebrow-light {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .45rem .75rem;
+      border-radius: 999px;
+      font-size: .7rem;
+      font-weight: 800;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: #1e3a8a;
+      background: rgba(219, 234, 254, 0.8);
+      border: 1px solid rgba(147, 197, 253, 0.7);
+    }
+
+    .nav-card {
+      position: relative;
+      width: 100%;
+      text-align: left;
+      padding: 0.95rem 1rem;
+      border-radius: 22px;
+      border: 1px solid rgba(226, 232, 240, 0.85);
+      background: rgba(255,255,255,0.74);
+      color: #334155;
+      transition: 180ms ease;
+      overflow: hidden;
+    }
+
+    .nav-card:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.92);
+      color: #0f172a;
+      box-shadow: 0 12px 26px rgba(15, 23, 42, 0.08);
+    }
+
+    .nav-card.active {
+      color: white;
+      border-color: rgba(96, 165, 250, 0.28);
+      background:
+        radial-gradient(circle at 16% 18%, rgba(125, 211, 252, 0.16), transparent 18%),
+        linear-gradient(135deg, #0f172a 0%, #1d4ed8 64%, #4f46e5 100%);
+      box-shadow: 0 16px 36px rgba(37, 99, 235, 0.28);
+    }
+
+    .nav-card.active::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0));
+      pointer-events: none;
+    }
+
+    .nav-progress-track {
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(226, 232, 240, 0.95);
+      overflow: hidden;
+    }
+
+    .nav-progress-bar {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #2563eb 0%, #4f46e5 100%);
+      box-shadow: inset 0 0 12px rgba(255,255,255,0.26);
+      transition: width 300ms ease;
+    }
+
+    .content-scroll {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(148,163,184,0.55) transparent;
+    }
+
+    .content-scroll::-webkit-scrollbar { width: 8px; }
+    .content-scroll::-webkit-scrollbar-track { background: transparent; }
+    .content-scroll::-webkit-scrollbar-thumb {
+      background: rgba(148,163,184,0.55);
+      border-radius: 999px;
+    }
+
+    .fade-in { animation: fadeIn 280ms ease forwards; }
+    .slide-up { animation: slideUp 420ms ease forwards; }
+    .scale-in { animation: scaleIn 220ms ease forwards; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.985); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .choice-card {
+      position: relative;
+      overflow: hidden;
+      transition: 180ms ease;
+    }
+
+    .choice-card:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+    }
+
+    .choice-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0));
+      pointer-events: none;
+    }
+
+    .pill-stat {
       display: inline-flex;
       align-items: center;
       gap: .45rem;
-      padding: .5rem .8rem;
+      padding: .55rem .8rem;
       border-radius: 999px;
-      background: rgba(255,255,255,0.14);
-      border: 1px solid rgba(255,255,255,0.18);
-      color: rgba(255,255,255,0.96);
-      font-size: .78rem;
-      font-weight: 800;
-      letter-spacing: .01em;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+      background: rgba(15,23,42,0.04);
+      border: 1px solid rgba(148,163,184,0.14);
+      font-size: .75rem;
+      font-weight: 700;
+      color: #334155;
     }
-    .blue-glow { box-shadow: 0 0 0 1px rgba(59,130,246,0.14), 0 18px 42px rgba(37,99,235,0.12); }
-    .nav-progress {
-      background: linear-gradient(90deg, #38bdf8 0%, #2563eb 50%, #4f46e5 100%);
-      box-shadow: 0 0 20px rgba(56,189,248,.35);
+
+    .mini-grid {
+      background-image:
+        linear-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.12) 1px, transparent 1px);
+      background-size: 26px 26px;
     }
-    .choice-card { transition: all .2s ease; }
-    .choice-card:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(15,23,42,.08); }
+
     .soft-divider {
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(148,163,184,.55), transparent);
+      background: linear-gradient(90deg, transparent, rgba(148,163,184,.48), transparent);
     }
-    .case-fallback {
+
+    .case-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      padding: .5rem .75rem;
+      border-radius: 999px;
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      background: rgba(37, 99, 235, 0.08);
+      color: #1d4ed8;
+      border: 1px solid rgba(37, 99, 235, 0.14);
+    }
+
+    .video-shell {
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      border: 1px solid rgba(226,232,240,0.88);
+      background: #020617;
+      box-shadow: 0 26px 60px rgba(15, 23, 42, 0.18);
+    }
+
+    .video-overlay-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      z-index: 12;
+      display: flex;
+      gap: 10px;
+      opacity: 0;
+      transition: opacity 220ms ease;
+    }
+
+    .video-shell:hover .video-overlay-btn {
+      opacity: 1;
+    }
+
+    .icon-circle-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      color: white;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(15,23,42,0.56);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 24px rgba(2, 6, 23, 0.22);
+      transition: 180ms ease;
+    }
+
+    .icon-circle-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(37, 99, 235, 0.74);
+    }
+
+    .tooltip {
+      position: absolute;
+      bottom: -42px;
+      right: 0;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: 180ms ease;
+      pointer-events: none;
+      white-space: nowrap;
+      font-size: .72rem;
+      padding: .35rem .55rem;
+      border-radius: 10px;
+      color: white;
+      background: rgba(15,23,42,0.94);
+    }
+
+    .icon-wrap:hover .tooltip {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .poster-stage {
+      position: relative;
+      display: block;
+      width: 100%;
+      overflow: hidden;
       background:
-        radial-gradient(circle at 20% 20%, rgba(125,211,252,0.2), transparent 28%),
-        radial-gradient(circle at 75% 20%, rgba(196,181,253,0.2), transparent 30%),
-        linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #111827 100%);
+        radial-gradient(circle at 18% 20%, rgba(59,130,246,0.26), transparent 20%),
+        radial-gradient(circle at 84% 12%, rgba(147,197,253,0.18), transparent 18%),
+        linear-gradient(135deg, #020617 0%, #0f172a 38%, #1d4ed8 100%);
+      min-height: 360px;
     }
-    .elite-stat {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.14);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
-    }
-    .floating-chip {
-      background: rgba(255,255,255,0.82);
-      border: 1px solid rgba(226,232,240,.85);
-      box-shadow: 0 10px 26px rgba(15,23,42,.06);
-      backdrop-filter: blur(10px);
-    }
-    .nav-pill {
-      background: rgba(255,255,255,0.72);
-      border: 1px solid rgba(255,255,255,0.82);
-      box-shadow: 0 10px 24px rgba(15,23,42,.05);
-    }
-    .poster-fallback-card {
-      min-height: 320px;
-      background:
-        radial-gradient(circle at top left, rgba(56,189,248,0.26), transparent 28%),
-        radial-gradient(circle at top right, rgba(129,140,248,0.22), transparent 34%),
-        linear-gradient(135deg, #09111f 0%, #0f3d96 42%, #1f2c5a 100%);
-    }
-    .poster-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: .7rem;
-    }
-    .poster-grid div {
-      border-radius: 1rem;
-      min-height: 76px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.1);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
-    }
-    .main-shell::before {
-      content: '';
+
+    .poster-stage::after {
+      content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(255,255,255,0.22), transparent 24%);
+      background: linear-gradient(180deg, rgba(2,6,23,0.02), rgba(2,6,23,0.48));
       pointer-events: none;
     }
+
+    .poster-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: 38px 38px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.9), rgba(0,0,0,.18));
+      pointer-events: none;
+    }
+
+    .poster-glow {
+      position: absolute;
+      inset: auto auto 20px 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .55rem .75rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.16);
+      backdrop-filter: blur(12px);
+      z-index: 2;
+    }
+
+    .poster-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      z-index: 2;
+    }
+
+    .poster-frame {
+      position: relative;
+      border-radius: 28px;
+      padding: .9rem;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 18px 60px rgba(2,6,23,0.28);
+      backdrop-filter: blur(12px);
+      max-width: 820px;
+      width: 100%;
+    }
+
+    .poster-image {
+      display: block;
+      width: 100%;
+      max-height: 360px;
+      object-fit: cover;
+      border-radius: 22px;
+      opacity: .94;
+    }
+
+    .play-badge {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .play-core {
+      width: 88px;
+      height: 88px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.88);
+      color: #0f172a;
+      box-shadow: 0 20px 40px rgba(2,6,23,0.24);
+      border: 1px solid rgba(255,255,255,0.78);
+      animation: pulsePlay 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pulsePlay {
+      0%, 100% { transform: scale(1); box-shadow: 0 20px 40px rgba(2,6,23,0.24); }
+      50% { transform: scale(1.03); box-shadow: 0 24px 50px rgba(37,99,235,0.34); }
+    }
+
+    .poster-caption {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 1.25rem 1.25rem 1.1rem;
+      background: linear-gradient(180deg, rgba(2,6,23,0) 0%, rgba(2,6,23,0.84) 85%);
+      z-index: 2;
+      text-align: left;
+      color: white;
+    }
+
+    .poster-title {
+      font-size: 1.08rem;
+      font-weight: 700;
+    }
+
+    .poster-subtitle {
+      margin-top: 0.22rem;
+      font-size: .9rem;
+      color: rgba(255,255,255,0.72);
+    }
+
+    .video-stage {
+      display: none;
+      background: #020617;
+    }
+
+    .video-stage.visible {
+      display: block;
+      animation: fadeIn 260ms ease forwards;
+    }
+
+    .video-meta {
+      display: grid;
+      gap: 1rem;
+      padding: 1.25rem;
+      background:
+        linear-gradient(180deg, rgba(15,23,42,0.98) 0%, rgba(15,23,42,0.92) 100%);
+      color: white;
+    }
+
+    .progress-shell {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(148,163,184,0.28);
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #38bdf8 0%, #2563eb 55%, #6366f1 100%);
+      transition: width 120ms linear;
+    }
+
+    .control-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .55rem .75rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.10);
+      font-size: .78rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.88);
+    }
+
+    .primary-button,
+    .secondary-button,
+    .ghost-button {
+      border-radius: 16px;
+      font-weight: 700;
+      transition: 180ms ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .55rem;
+    }
+
+    .primary-button {
+      background: linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+      color: white;
+      box-shadow: 0 16px 28px rgba(37, 99, 235, 0.22);
+    }
+
+    .primary-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 20px 34px rgba(37, 99, 235, 0.28);
+    }
+
+    .secondary-button {
+      background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+      color: white;
+      box-shadow: 0 16px 28px rgba(22, 163, 74, 0.20);
+    }
+
+    .secondary-button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 20px 34px rgba(22, 163, 74, 0.26);
+    }
+
+    .ghost-button {
+      color: #475569;
+      background: rgba(255,255,255,0.84);
+      border: 1px solid rgba(226,232,240,0.88);
+    }
+
+    .ghost-button:hover {
+      color: #1d4ed8;
+      border-color: rgba(96,165,250,0.42);
+      background: rgba(255,255,255,0.96);
+    }
+
+    .table-glow {
+      position: relative;
+    }
+
+    .table-glow::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(59,130,246,0.05), transparent);
+      pointer-events: none;
+      border-radius: inherit;
+    }
+
+    .mobile-bottom-nav {
+      position: sticky;
+      bottom: 0;
+      z-index: 18;
+      display: none;
+      padding: .9rem 1rem 1.05rem;
+      background: linear-gradient(180deg, rgba(248,251,255,0) 0%, rgba(248,251,255,0.95) 40%, rgba(248,251,255,0.98) 100%);
+      backdrop-filter: blur(16px);
+    }
+
+    .mobile-bottom-nav .inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: .75rem;
+      border-radius: 22px;
+      padding: .8rem;
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(226,232,240,0.88);
+      box-shadow: 0 16px 36px rgba(15,23,42,0.10);
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%) translateY(10px);
+      background: rgba(15,23,42,0.94);
+      color: white;
+      font-size: .84rem;
+      font-weight: 600;
+      padding: .8rem 1rem;
+      border-radius: 14px;
+      box-shadow: 0 18px 34px rgba(2,6,23,0.28);
+      opacity: 0;
+      pointer-events: none;
+      transition: 220ms ease;
+      z-index: 60;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
     @media (max-width: 767px) {
-      .poster-fallback-card { min-height: 260px; }
-      .hero-panel::before { opacity: .36; }
+      body {
+        overflow: auto;
+      }
+
+      #app-shell {
+        display: block;
+        min-height: 100dvh;
+        height: auto;
+        overflow: visible;
+      }
+
+      #sidebar {
+        position: fixed;
+        inset: 0 auto 0 0;
+        width: min(90vw, 360px);
+        max-width: 90vw;
+        height: 100dvh;
+      }
+
+      .content-scroll {
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .header-brand-title {
+        white-space: normal;
+        line-height: 1.05;
+      }
+
+      .header-brand-tagline {
+        white-space: normal;
+        line-height: 1.25;
+        max-width: 15rem;
+      }
+
+      .pill-stat {
+        max-width: 100%;
+      }
+
+      .poster-stage {
+        min-height: 260px;
+      }
+
+      .hero-shell {
+        border-radius: 28px;
+        padding: 1.15rem;
+      }
+
+      .section-card,
+      .video-shell,
+      .soft-panel,
+      .soft-panel-strong {
+        border-radius: 20px;
+      }
+
+      .metric-chip span:first-child {
+        letter-spacing: 0.14em;
+      }
+
+      .metric-chip span:last-child {
+        font-size: 1.08rem;
+      }
+
+      .video-overlay-btn {
+        opacity: 1;
+        top: 12px;
+        right: 12px;
+        gap: 8px;
+      }
+
+      .tooltip {
+        display: none;
+      }
+
+      .icon-circle-btn {
+        width: 40px;
+        height: 40px;
+      }
+
+      .action-row-mobile {
+        display: grid !important;
+        grid-template-columns: 1fr;
+        gap: .75rem;
+      }
+
+      .action-row-mobile > div,
+      .action-row-mobile button,
+      .action-row-mobile a {
+        width: 100%;
+      }
+
+      .action-row-mobile .primary-button,
+      .action-row-mobile .secondary-button,
+      .action-row-mobile .ghost-button {
+        width: 100%;
+      }
+
+      .case-head-mobile {
+        align-items: flex-start;
+      }
+
+      .mobile-bottom-nav {
+        display: block;
+        padding: .75rem .85rem calc(1rem + env(safe-area-inset-bottom));
+      }
+
+      .mobile-bottom-nav .inner {
+        grid-template-columns: 1fr;
+      }
+
+      .mobile-bottom-nav .inner button {
+        width: 100%;
+      }
     }
   </style>
 </head>
-<body class="text-slate-900 h-screen flex overflow-hidden relative">
-<div class="ambient-bg" aria-hidden="true">
-  <span class="orb orb-1"></span>
-  <span class="orb orb-2"></span>
-  <span class="orb orb-3"></span>
-</div>
-
-<aside class="sidebar-shell border-r border-white/70 flex-shrink-0 transition-all duration-300 w-72 flex flex-col z-20 absolute md:relative h-full transform md:transform-none -translate-x-full md:translate-x-0" id="sidebar">
-  <div class="elite-sidebar-top p-5 flex justify-between items-start gap-4">
-    <div></div>
-    <button class="md:hidden text-slate-400 hover:text-slate-700 mt-1" onclick="toggleSidebar()">
-      <span class="material-symbols-outlined">close</span>
-    </button>
+<body class="text-slate-900">
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+    <div class="orb three"></div>
   </div>
-  <div class="px-4 pt-4 pb-2">
-    <div class="rounded-[26px] sidebar-insight-card text-white p-4 blue-glow">
-      <div class="relative z-10">
-        <div class="text-[11px] uppercase tracking-[0.24em] text-blue-100 font-bold">Clinical Experience</div>
-        <div class="mt-2 text-sm text-slate-100 leading-relaxed">An elevated flow for diagnosis, treatment interpretation, monitoring, and applied case learning.</div>
-        <div class="grid grid-cols-2 gap-2 mt-4 text-[11px] font-semibold">
-          <div class="elite-stat rounded-2xl p-3">
-            <div class="text-blue-100 uppercase tracking-[0.18em]">Sections</div>
-            <div class="text-lg font-black mt-1">06</div>
+
+  <div id="app-shell" class="glass-shell h-screen flex overflow-hidden">
+    <aside id="sidebar" class="sidebar-shell w-80 max-w-[88vw] flex-shrink-0 h-full absolute md:relative z-30 -translate-x-full md:translate-x-0 transition-transform duration-300 flex flex-col">
+      <div class="px-5 pt-5 pb-4 border-b border-slate-200/70">
+        <div class="soft-panel rounded-[28px] p-4">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <div class="eyebrow-light mb-3">
+                <span class="material-symbols-outlined text-[16px]">hub</span>
+                Premium Clinical Module
+              </div>
+              <div class="text-xl font-black tracking-tight text-slate-950">CIDP Track</div>
+              <p class="text-sm text-slate-500 mt-1 leading-relaxed">Diagnosis, treatment evolution, objective monitoring, and applied case learning in an elevated learner experience.</p>
+            </div>
+            <button class="md:hidden text-slate-500 hover:text-slate-900 rounded-xl p-2 hover:bg-slate-100" onclick="toggleSidebar()" aria-label="Close navigation">
+              <span class="material-symbols-outlined">close</span>
+            </button>
           </div>
-          <div class="elite-stat rounded-2xl p-3">
-            <div class="text-blue-100 uppercase tracking-[0.18em]">Mode</div>
-            <div class="text-lg font-black mt-1">Live</div>
-          </div>
-        </div>
-        <div class="mt-4">
-          <div class="flex justify-between text-[11px] text-slate-200 mb-1 font-semibold">
-            <span>Progress</span>
-            <span id="sidebar-progress-text">1 / 6</span>
-          </div>
-          <div class="h-2 rounded-full bg-white/10 overflow-hidden">
-            <div id="sidebar-progress-bar" class="h-full nav-progress rounded-full" style="width:16.6%"></div>
+          <div class="mt-4 p-4 rounded-2xl bg-slate-950 text-white shadow-xl shadow-slate-900/15">
+            <div class="flex items-center justify-between gap-3 text-[11px] uppercase tracking-[0.18em] font-bold text-slate-300">
+              <span>Module Progress</span>
+              <span id="sidebar-progress-count">1 of 6</span>
+            </div>
+            <div class="nav-progress-track mt-3">
+              <div id="sidebar-progress-bar" class="nav-progress-bar" style="width: 16.67%;"></div>
+            </div>
+            <div class="mt-3 flex items-center justify-between text-sm">
+              <div class="text-slate-300">Completion</div>
+              <div class="font-extrabold text-white" id="sidebar-progress-label">17%</div>
+            </div>
           </div>
         </div>
       </div>
+
+      <div class="px-4 py-4 flex-1 overflow-y-auto content-scroll">
+        <div class="text-[11px] uppercase tracking-[0.22em] font-bold text-slate-400 px-2 mb-3">Module Navigation</div>
+        <div id="nav-container" class="space-y-2"></div>
+      </div>
+
+      <div class="p-4 border-t border-slate-200/70">
+        <div class="soft-panel-strong rounded-[22px] p-4">
+          <div class="text-xs uppercase tracking-[0.18em] font-bold text-slate-400">Experience Layer</div>
+          <div class="mt-2 text-sm text-slate-600 leading-relaxed">Glass navigation, premium content cards, stronger mobile controls, and a polished CIDP learning flow.</div>
+        </div>
+      </div>
+    </aside>
+
+    <div id="sidebar-overlay" class="fixed inset-0 bg-slate-950/40 backdrop-blur-[2px] hidden z-20 md:hidden" onclick="toggleSidebar()"></div>
+
+    <div class="flex-1 flex flex-col h-full min-w-0 relative z-10">
+      <header class="glass-header sticky top-0 z-20">
+        <div class="px-4 md:px-6 py-3.5 flex items-center justify-between gap-4">
+          <div class="min-w-0 flex items-center gap-3">
+            <button class="md:hidden text-slate-600 hover:text-slate-950 rounded-xl p-2 hover:bg-white/70" onclick="toggleSidebar()" aria-label="Open navigation">
+              <span class="material-symbols-outlined">menu</span>
+            </button>
+            <div class="min-w-0">
+              <div class="header-brand-title text-base sm:text-lg font-black uppercase tracking-tight text-slate-950">REAL WORLD <span class="text-blue-600">CE</span></div>
+              <div class="header-brand-tagline text-[11px] sm:text-xs font-semibold tracking-[0.08em] text-slate-600 mt-1">Bringing the Real World Into Clinical Education</div>
+              
+            </div>
+          </div>
+
+          <div class="hidden xl:flex items-center gap-3 min-w-0">
+            <div class="pill-stat">
+              <span class="material-symbols-outlined text-[16px] text-blue-600">medical_services</span>
+              <span id="breadcrumb-module">CIDP Track</span>
+            </div>
+            <div class="pill-stat min-w-0 max-w-[320px]">
+              <span class="material-symbols-outlined text-[16px] text-blue-600">chevron_right</span>
+              <span id="breadcrumb-section" class="truncate">Diagnostic Delays</span>
+            </div>
+          </div>
+
+
+        </div>
+      </header>
+
+      <main id="main-content" class="flex-1 overflow-y-auto content-scroll px-4 md:px-8 py-5 md:py-8"></main>
+
+      <div class="px-4 md:px-8 pb-24 md:pb-6">
+        <div class="max-w-4xl mx-auto text-center text-[11px] sm:text-xs tracking-[0.16em] uppercase font-bold text-slate-400">Archetype created by Real Education</div>
+      </div>
+
+      <div class="mobile-bottom-nav md:hidden">
+        <div class="inner">
+          <div class="min-w-0">
+            <div class="text-[10px] uppercase tracking-[0.18em] font-extrabold text-slate-400">Current Section</div>
+            <div id="mobile-current-section" class="text-sm font-bold text-slate-900 truncate mt-1">1. Diagnostic Delays</div>
+          </div>
+          <button onclick="goToNextSection()" class="primary-button px-4 py-3 text-sm">
+            Next
+            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+          </button>
+        </div>
+      </div>
     </div>
-    <p class="text-[11px] text-slate-400 px-2 mt-4 mb-2 uppercase tracking-[0.22em] font-bold">Module Navigation</p>
-  </div>
-  <div class="p-3 space-y-6 overflow-y-auto custom-scroll flex-1">
-    <div id="nav-container"></div>
-  </div>
-</aside>
-
-<div class="fixed inset-0 bg-slate-950/40 z-10 hidden md:hidden" id="sidebar-overlay" onclick="toggleSidebar()"></div>
-
-<div class="flex-1 flex flex-col h-full overflow-hidden relative main-shell">
-<header class="sticky top-0 z-50 glass-cmv">
- <div class="w-full px-5 py-3.5 flex items-center justify-between gap-4">
-  <div class="flex items-center gap-3 min-w-0">
-   <div class="leading-tight min-w-0">
-    <div class="text-base sm:text-lg font-black tracking-tight uppercase whitespace-nowrap text-slate-950">
-     REAL WORLD <span class="text-blue-600">CE</span>
-    </div>
-    <div class="text-[10px] sm:text-[11px] font-semibold tracking-[0.18em] uppercase text-slate-500 mt-1 whitespace-nowrap">
-     Bringing the Real World Into Clinical Education
-    </div>
-   </div>
   </div>
 
-  <div class="hidden lg:flex items-center gap-2 px-3.5 py-2.5 rounded-full nav-pill text-sm text-slate-500">
-    <span class="material-symbols-outlined text-blue-600 text-[18px]">hub</span>
-    <span class="capitalize font-bold text-slate-900" id="breadcrumb-module">Module</span>
-    <span class="material-symbols-outlined text-sm text-blue-600">chevron_right</span>
-    <span id="breadcrumb-section" class="font-semibold truncate max-w-[240px]">Section</span>
-  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <div class="flex items-center gap-3">
-   <div class="hidden md:flex items-center gap-2 text-xs text-slate-600 font-semibold uppercase tracking-[0.18em] floating-chip px-3 py-2 rounded-full">
-    <span id="header-step-index">01</span>
-    <div class="w-10 h-px bg-slate-300"></div>
-    <span id="header-step-total">06</span>
-   </div>
-   <button class="p-2 hover:bg-slate-100 rounded-xl text-slate-600 md:hidden" onclick="toggleSidebar()">
-    <span class="material-symbols-outlined">menu</span>
-   </button>
-  </div>
- </div>
-</header>
-
-  <main class="flex-1 overflow-y-auto p-4 md:p-8 lg:p-10 bg-transparent scroll-smooth" id="main-content"></main>
-  <div class="px-5 md:px-8 lg:px-10 py-3 border-t border-slate-200/70 bg-white/55 backdrop-blur text-[11px] text-slate-500 font-medium">Template created by Real Education</div>
-</div>
-
+  
 <script>
-  const appData = {
-    modules: {
-      'cidp': {
-        title: 'CIDP Track',
-        color: 'blue',
-        sections: [
-          { id: 'diagnosis', title: '1. Diagnostic Delays', icon: 'troubleshoot' },
-          { id: 'treatment', title: '2. Newer Options', icon: 'vaccines' },
-          { id: 'monitoring', title: '3. Objective Monitoring', icon: 'monitoring' },
-          { id: 'case-marcus', title: 'Case 1: Marcus', icon: 'person' },
-          { id: 'case-sarah', title: 'Case 2: Sarah', icon: 'person_3' },
-          { id: 'case-david', title: 'Case 3: David', icon: 'elderly' }
-        ]
+    const appData = {
+      modules: {
+        cidp: {
+          title: 'CIDP Track',
+          color: 'blue',
+          sections: [
+            { id: 'diagnosis', title: '1. Diagnostic Delays', icon: 'troubleshoot' },
+            { id: 'treatment', title: '2. Newer Options', icon: 'vaccines' },
+            { id: 'monitoring', title: '3. Objective Monitoring', icon: 'monitoring' },
+            { id: 'case-marcus', title: 'Case 1: Marcus', icon: 'person' },
+            { id: 'case-sarah', title: 'Case 2: Sarah', icon: 'person_3' },
+            { id: 'case-david', title: 'Case 3: David', icon: 'elderly' }
+          ]
+        }
       }
+    };
+
+    let activeModuleId = 'cidp';
+    let activeSectionId = 'diagnosis';
+    let quizStates = {};
+    let toastTimer = null;
+
+    window.downloadMedia = async function (url, filename) {
+      if (!url) return;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Network response was not ok');
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = blobUrl;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(blobUrl);
+        document.body.removeChild(a);
+        showToast('Download started');
+      } catch (error) {
+        console.warn('Direct download blocked by CORS. Opening in new tab instead.', error);
+        window.open(url, '_blank');
+        showToast('Opened media in a new tab');
+      }
+    };
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      if (!toast) return;
+      toast.textContent = message;
+      toast.classList.add('show');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
     }
-  };
 
-  const ringClassMap = { blue: 'ring-blue-200' };
-  const hoverClassMap = { blue: 'hover:border-blue-300' };
-  const activeClassMap = { blue: 'bg-white text-blue-700 ring-1 ring-inset ring-blue-200 shadow-[0_12px_28px_rgba(37,99,235,0.12)] border border-blue-100' };
-
-  let activeModuleId = 'cidp';
-  let activeSectionId = 'diagnosis';
-  let quizStates = {};
-
-  window.downloadMedia = async function(url, filename) {
-    try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error('Network response was not ok');
-      const blob = await response.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = blobUrl;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(blobUrl);
-      document.body.removeChild(a);
-    } catch (error) {
-      console.warn('Direct download blocked by CORS. Opening in new tab instead.', error);
-      window.open(url, '_blank');
+    function getSections() {
+      return appData.modules[activeModuleId].sections;
     }
-  };
 
-  function getSectionIndex(moduleId, sectionId) {
-    const module = appData.modules[moduleId];
-    return module.sections.findIndex(s => s.id === sectionId);
-  }
+    function getSectionIndex(sectionId = activeSectionId) {
+      return getSections().findIndex(section => section.id === sectionId);
+    }
 
-  function getSectionContent(moduleId, sectionId) {
-    const sectionIndex = getSectionIndex(moduleId, sectionId) + 1;
-    const totalSections = appData.modules[moduleId].sections.length;
+    function getProgressInfo() {
+      const sections = getSections();
+      const currentIndex = getSectionIndex();
+      const position = currentIndex + 1;
+      const total = sections.length;
+      const percent = Math.round((position / total) * 100);
+      return { position, total, percent, currentIndex };
+    }
 
-    if (sectionId === 'diagnosis') return `
-      <div class="space-y-6 max-w-4xl mx-auto slide-up">
-        <section class="hero-panel rounded-[28px] p-8 md:p-10 text-white overflow-hidden relative">
-          <div class="relative z-10">
-            <div class="flex flex-wrap gap-2 mb-5">
-              <span class="metric-pill"><span class="material-symbols-outlined text-[16px]">insights</span>High misdiagnosis burden</span>
-              <span class="metric-pill"><span class="material-symbols-outlined text-[16px]">schedule</span>Delayed intervention risk</span>
+    function getPrevNextSections() {
+      const sections = getSections();
+      const currentIndex = getSectionIndex();
+      return {
+        prev: currentIndex > 0 ? sections[currentIndex - 1] : null,
+        next: currentIndex < sections.length - 1 ? sections[currentIndex + 1] : null
+      };
+    }
+
+    function heroBlock(title, subtitle, chips = [], accent = 'Clinical Education') {
+      const chipsHtml = chips.map(chip => `
+        <div class="metric-chip">
+          <span>${chip.label}</span>
+          <span>${chip.value}</span>
+        </div>
+      `).join('');
+
+      return `
+        <div class="hero-shell mb-6 md:mb-7">
+          <div class="eyebrow mb-4">
+            <span class="material-symbols-outlined text-[16px]">monitor_heart</span>
+            ${accent}
+          </div>
+          <div class="max-w-3xl">
+            <h1 class="text-3xl md:text-5xl font-black tracking-tight leading-[1.03]">${title}</h1>
+            <p class="mt-4 text-blue-50/92 text-base md:text-lg leading-relaxed max-w-2xl">${subtitle}</p>
+          </div>
+          ${chips.length ? `<div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-7 max-w-3xl">${chipsHtml}</div>` : ''}
+        </div>
+      `;
+    }
+
+    function sectionShell(inner, meta = {}) {
+      const progress = getProgressInfo();
+      const { prev, next } = getPrevNextSections();
+      const headerMeta = `
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+          <div class="flex flex-wrap items-center gap-2.5">
+            <div class="pill-stat">
+              <span class="material-symbols-outlined text-[16px] text-blue-600">view_carousel</span>
+              Section ${progress.position} of ${progress.total}
             </div>
-            <div class="max-w-2xl">
-              <div class="text-xs uppercase tracking-[0.26em] text-blue-100 font-bold mb-3">CIDP Clinical Needs Assessment</div>
-              <h1 class="text-3xl md:text-4xl font-extrabold mb-4 leading-tight">Diagnostic Delays in CIDP</h1>
-              <p class="text-blue-100/95 text-base md:text-lg leading-relaxed">Overcoming high misdiagnosis rates and fragmented workups so clinicians can recognize CIDP earlier and reduce preventable progression.</p>
+            <div class="pill-stat">
+              <span class="material-symbols-outlined text-[16px] text-blue-600">task_alt</span>
+              ${progress.percent}% complete
             </div>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-7 max-w-3xl">
-              <div class="rounded-[22px] elite-stat p-4">
-                <div class="text-2xl font-extrabold">68%</div>
-                <div class="text-sm text-blue-100 mt-1">Initially misdiagnosed</div>
-              </div>
-              <div class="rounded-[22px] elite-stat p-4">
-                <div class="text-2xl font-extrabold">21+ mo</div>
-                <div class="text-sm text-blue-100 mt-1">Potential delay window</div>
-              </div>
-              <div class="rounded-[22px] elite-stat p-4">
-                <div class="text-2xl font-extrabold">19</div>
-                <div class="text-sm text-blue-100 mt-1">Avg diagnostic procedures</div>
-              </div>
+            ${meta.badge ? `<div class="pill-stat"><span class="material-symbols-outlined text-[16px] text-blue-600">stars</span>${meta.badge}</div>` : ''}
+          </div>
+        </div>
+      `;
+
+      const navFooter = `
+        <div class="mt-4 md:mt-6 flex flex-wrap items-center justify-between gap-3 action-row-mobile">
+          <div>
+            ${prev ? `<button onclick="navigateTo('${activeModuleId}', '${prev.id}')" class="ghost-button px-5 py-3 text-sm"><span class="material-symbols-outlined text-[18px]">arrow_back</span>Back</button>` : ''}
+          </div>
+          <div>
+            ${next ? `<button onclick="navigateTo('${activeModuleId}', '${next.id}')" class="primary-button px-5 py-3 text-sm">Next Section<span class="material-symbols-outlined text-[18px]">arrow_forward</span></button>` : `<button class="secondary-button px-5 py-3 text-sm"><span class="material-symbols-outlined text-[18px]">check_circle</span>Complete Module</button>`}
+          </div>
+        </div>
+      `;
+
+      return `
+        <div class="max-w-6xl mx-auto slide-up">
+          ${headerMeta}
+          ${inner}
+          ${meta.hideAutoFooter ? '' : navFooter}
+        </div>
+      `;
+    }
+
+    function renderInfoGrid(items) {
+      return `
+        <div class="grid md:grid-cols-2 gap-4">
+          ${items.map(item => `
+            <div class="section-card p-5 md:p-6">
+              <div class="eyebrow-light mb-3"><span class="material-symbols-outlined text-[16px]">flare</span>${item.label}</div>
+              <p class="text-slate-600 leading-relaxed text-sm md:text-[15px]">${item.text}</p>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function renderQuizComponent(id, question, options, correctIndex, explanation) {
+      const state = quizStates[id] || { submitted: false, selected: null };
+      const isCorrect = state.selected === correctIndex;
+
+      const optionsHtml = options.map((option, idx) => {
+        let cardClass = 'bg-white border-slate-200 hover:border-blue-300';
+        let radio = '<div class="w-5 h-5 rounded-full border border-slate-300"></div>';
+        let textClass = 'text-slate-700';
+
+        if (!state.submitted && state.selected === idx) {
+          cardClass = 'bg-blue-50 border-blue-500 ring-1 ring-blue-500';
+          radio = '<div class="w-5 h-5 rounded-full border border-blue-500 bg-white flex items-center justify-center"><div class="w-2.5 h-2.5 rounded-full bg-blue-500"></div></div>';
+        } else if (state.submitted) {
+          if (idx === correctIndex) {
+            cardClass = 'bg-green-50 border-green-300 ring-1 ring-green-500';
+            radio = '<div class="w-5 h-5 rounded-full bg-green-500 border-green-500 flex items-center justify-center"><span class="material-symbols-outlined text-white text-sm">check</span></div>';
+            textClass = 'text-green-900 font-bold';
+          } else if (idx === state.selected) {
+            cardClass = 'bg-red-50 border-red-300 ring-1 ring-red-500';
+            radio = '<div class="w-5 h-5 rounded-full border-red-500 flex items-center justify-center"><span class="material-symbols-outlined text-red-500 text-sm">close</span></div>';
+            textClass = 'text-red-900';
+          } else {
+            cardClass = 'bg-slate-50 border-slate-200 opacity-60';
+          }
+        }
+
+        const clickAttr = !state.submitted ? `onclick="selectQuizOption('${id}', ${idx})"` : '';
+
+        return `
+          <button type="button" ${clickAttr} class="choice-card w-full text-left rounded-2xl border p-4 flex items-center gap-3 ${cardClass}">
+            ${radio}
+            <span class="text-sm md:text-[15px] ${textClass}">${option}</span>
+          </button>
+        `;
+      }).join('');
+
+      const feedback = state.submitted
+        ? `
+          <div class="mt-5 rounded-2xl p-5 ${isCorrect ? 'bg-green-100 text-green-900 border border-green-200' : 'bg-red-50 text-red-900 border border-red-200'} fade-in">
+            <div class="flex items-center gap-2 font-extrabold mb-2">
+              <span class="material-symbols-outlined">${isCorrect ? 'check_circle' : 'cancel'}</span>
+              ${isCorrect ? 'Correct' : 'Incorrect'}
+            </div>
+            <p class="text-sm md:text-[15px] leading-relaxed">${explanation}</p>
+          </div>
+        `
+        : `
+          <button onclick="submitQuiz('${id}')" class="primary-button mt-5 w-full px-5 py-3.5 text-sm ${state.selected === null ? 'opacity-40 cursor-not-allowed' : ''}" ${state.selected === null ? 'disabled' : ''}>
+            Submit Answer
+            <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+          </button>
+        `;
+
+      return `
+        <div class="section-card p-6 md:p-7 my-6 table-glow" id="${id}">
+          <div class="flex flex-wrap items-start gap-3 justify-between mb-4">
+            <div class="eyebrow-light"><span class="material-symbols-outlined text-[16px]">quiz</span>Knowledge Check</div>
+            <div class="text-xs uppercase tracking-[0.18em] font-bold text-slate-400">Interactive Assessment</div>
+          </div>
+          <h3 class="text-lg md:text-xl font-extrabold text-slate-950 leading-snug">${question}</h3>
+          <div class="mt-5 space-y-3">${optionsHtml}</div>
+          ${feedback}
+        </div>
+      `;
+    }
+
+    function renderClinicalVideoBlock(key, name, posterSrc, videoSrc, observationText, opts = {}) {
+      const safeVideoSrc = (videoSrc || '').replace(/^\.\//, '');
+      const posterLabel = opts.posterLabel || 'Clinical Observation';
+      const stageMinHeight = opts.stageMinHeight || 'min-height: 360px;';
+      const hasImagePoster = !!posterSrc && /\.(png|jpe?g|webp|gif|svg)$/i.test(posterSrc);
+      const posterDownload = hasImagePoster ? `
+            <div class="icon-wrap relative">
+              <button type="button" onclick="event.stopPropagation(); downloadMedia('${posterSrc}', '${name}_poster.jpg')" class="icon-circle-btn" aria-label="Download poster image">
+                <span class="material-symbols-outlined text-[18px]">image</span>
+              </button>
+              <div class="tooltip">Download image</div>
+            </div>` : '';
+      const fallbackBadge = opts.fallbackBadge || 'Case Preview';
+      const fallbackTone = opts.fallbackTone || 'Diagnostic Review';
+      const posterBody = hasImagePoster ? `
+              <div class="poster-frame">
+                <img src="${posterSrc}" alt="${name}" class="poster-image" />
+                <div class="play-badge">
+                  <div class="play-core">
+                    <svg viewBox="0 0 24 24" class="w-8 h-8 translate-x-[1px]" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
+                  </div>
+                </div>
+              </div>` : `
+              <div class="poster-frame">
+                <div class="rounded-[22px] border border-white/10 bg-white/8 p-5 md:p-6 text-white min-h-[250px] flex flex-col justify-between">
+                  <div class="flex items-start justify-between gap-4">
+                    <div>
+                      <div class="eyebrow mb-3">${fallbackBadge}</div>
+                      <div class="text-3xl font-black tracking-tight">${name}</div>
+                      <div class="text-blue-100/80 text-sm mt-2 max-w-md">${fallbackTone}</div>
+                    </div>
+                    <div class="play-core shrink-0 !w-16 !h-16">
+                      <svg viewBox="0 0 24 24" class="w-6 h-6 translate-x-[1px]" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
+                    </div>
+                  </div>
+                  <div class="grid grid-cols-3 gap-3 mt-6">
+                    <div class="rounded-2xl bg-white/10 border border-white/10 p-3 text-xs font-semibold tracking-[0.12em] uppercase text-blue-100">Clinical clues</div>
+                    <div class="rounded-2xl bg-white/10 border border-white/10 p-3 text-xs font-semibold tracking-[0.12em] uppercase text-blue-100">Observation flow</div>
+                    <div class="rounded-2xl bg-white/10 border border-white/10 p-3 text-xs font-semibold tracking-[0.12em] uppercase text-blue-100">Decision support</div>
+                  </div>
+                </div>
+              </div>`;
+
+      return `
+        <div class="video-shell my-6" data-clinical-video-block="1" data-cv-key="${key}">
+          <div class="video-overlay-btn">
+            ${posterDownload}
+            <div class="icon-wrap relative">
+              <button type="button" onclick="event.stopPropagation(); downloadMedia('${safeVideoSrc}', '${name}_clinical_video.mp4')" class="icon-circle-btn" aria-label="Download video">
+                <span class="material-symbols-outlined text-[18px]">movie</span>
+              </button>
+              <div class="tooltip">Download video</div>
             </div>
           </div>
-        </section>
 
-        <div class="section-card rounded-[28px] p-6 md:p-7">
-          <div class="flex items-center gap-3 mb-4">
-            <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center"><span class="material-symbols-outlined">fact_check</span></div>
-            <div>
-              <h2 class="text-xl font-bold text-slate-900">The Clinical Gap</h2>
-              <p class="text-sm text-slate-500">Where diagnostic inconsistency undermines timely care</p>
+          <button type="button" class="poster-stage w-full text-left" style="${stageMinHeight}" data-cv-poster aria-label="Play ${name} clinical observation">
+            <div class="poster-grid"></div>
+            <div class="poster-glow">
+              <span class="material-symbols-outlined text-[16px]">play_circle</span>
+              ${posterLabel}
             </div>
-          </div>
-          <div class="prose prose-slate max-w-none text-slate-600 leading-relaxed">
-            <p class="mb-4">Timely recognition of Chronic Inflammatory Demyelinating Polyradiculoneuropathy (CIDP) remains a major hurdle. As many as <strong>68%</strong> of patients are initially misdiagnosed, leading to delays that can extend beyond 21 months.</p>
-            <div class="rounded-2xl bg-amber-50 border border-amber-200 p-5 my-6">
-              <div class="flex items-start gap-3">
-                <span class="material-symbols-outlined text-amber-600">warning</span>
+            <div class="poster-content">
+              ${posterBody}
+            </div>
+            <div class="poster-caption">
+              <div class="poster-title">${posterLabel}</div>
+              <div class="poster-subtitle">Click to launch the case video and observation summary</div>
+            </div>
+          </button>
+
+          <div class="video-stage" data-cv-wrap>
+            <video class="w-full h-auto max-h-[620px] bg-black" data-cv-video controls playsinline preload="metadata" ${hasImagePoster ? `poster="${posterSrc}"` : ''}>
+              <source src="${safeVideoSrc}" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            <div class="video-meta">
+              <div class="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <p class="font-bold text-amber-900 mb-1">Diagnostic Fragmentation</p>
-                  <p class="text-amber-800 text-sm">Patients undergo an average of 19 diagnostic procedures. Compounding this, only 15% of neurologists report always using diagnostic guidelines.</p>
+                  <div class="text-lg md:text-xl font-extrabold text-white">Clinical Observation</div>
+                  <div class="text-sm text-slate-300 mt-1">${name}</div>
+                </div>
+                <div class="flex flex-wrap items-center gap-2">
+                  <div class="control-chip">
+                    <span class="material-symbols-outlined text-[16px]">monitoring</span>
+                    <span data-cv-status>Ready to play</span>
+                  </div>
+                  <button type="button" data-cv-replay class="control-chip hover:bg-white/12 transition">
+                    <span class="material-symbols-outlined text-[16px]">replay</span>
+                    Replay
+                  </button>
                 </div>
               </div>
+              <div class="progress-shell">
+                <div class="progress-bar" data-cv-progress></div>
+              </div>
+              <p class="text-slate-300 text-sm md:text-[15px] leading-relaxed max-w-3xl">${observationText}</p>
             </div>
-            <h3 class="font-bold text-slate-900 mt-6 mb-2">Best Practice Workflow</h3>
-            <p>Diagnostic workups should prioritize <strong>electrodiagnostic nerve conduction testing</strong>, supported by ultrasound, MRI, CSF analysis, and nerve biopsy as needed to capture proximal or multifocal involvement.</p>
           </div>
         </div>
-        ${renderQuizComponent('cidp-q1', "What is the recommended primary, objective diagnostic tool for a patient who meets the clinical criteria for CIDP?", ["Magnetic Resonance Imaging (MRI)", "Cerebrospinal fluid (CSF) analysis", "Electrodiagnostic nerve conduction testing", "Diagnostic nerve biopsy"], 2, "Correct! Structured diagnostic testing should initially focus on electrodiagnostic nerve conduction testing, which can then be supported by other clinical features.")}
-        ${renderFooterNav(null, ['cidp','treatment'], sectionIndex, totalSections, 'Next: Treatments')}
-      </div>`;
+      `;
+    }
 
-    if (sectionId === 'treatment') return `
-      <div class="space-y-6 max-w-4xl mx-auto slide-up">
-        ${renderMiniHero('Integrating Newer Therapies', 'Guideline-recommended interventions often lack sequencing data for newly approved agents. Clinicians must actively integrate recent efficacy and safety findings into their treatment algorithms.', 'biotech', sectionIndex, totalSections)}
-        <div class="grid grid-cols-1 mt-6 gap-4">
-         <div class="section-card rounded-3xl p-6 border-l-4 border-blue-500">
-          <h3 class="font-bold text-lg text-slate-800 mb-2">10% IVIg (Approved 2024)</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">Demonstrated a 94.4% treatment response rate in the ADVANCE-CIDP 2 trial based on improvements in INCAT-recorded functional disability.</p>
-         </div>
-         <div class="section-card rounded-3xl p-6 border-l-4 border-purple-500">
-          <h3 class="font-bold text-lg text-slate-800 mb-2">Efgartigimod alfa + hyaluronidase-qvfc (Approved 2024)</h3>
-          <p class="text-sm text-slate-600 leading-relaxed">An FcRn-based subcutaneous injection that demonstrated a lower relapse rate compared to placebo. It competes with IgG to reduce their recycling.</p>
-         </div>
-        </div>
-
-        ${renderQuizComponent('cidp-q2', "Which recently approved therapeutic agent for CIDP operates as a neonatal Fc receptor (FcRn) blocker?", ["10% IVIg", "Corticosteroids", "10% SCIg + rHuPH20", "Efgartigimod alfa + hyaluronidase-qvfc"], 3, "Correct! Efgartigimod alfa works as an FcRn blocker that competes with IgG to reduce their recycling, leaving them free to be degraded in cellular lysosomes.")}
-        ${renderFooterNav(['cidp','diagnosis'], ['cidp','monitoring'], sectionIndex, totalSections, 'Next: Monitoring')}
-      </div>`;
-    
-    if (sectionId === 'monitoring') return `
-      <div class="space-y-6 max-w-4xl mx-auto slide-up">
-        ${renderMiniHero('Objective Monitoring Tools', 'Current practice still leans too heavily on subjective reporting. Better monitoring creates a more reliable path for titration, treatment durability, and confident clinical decisions.', 'monitor', sectionIndex, totalSections)}
-        <div class="section-card rounded-[28px] p-6 md:p-7">
-          <h3 class="font-semibold text-lg mb-4 text-slate-800">The Problem with Subjective Reporting</h3>
-          <p class="text-slate-600 mb-4 leading-relaxed">Standardized monitoring is severely underutilized. This poor monitoring contributes to a <strong>35% treatment discontinuation rate</strong> in the first 4 months of IVIg therapy.</p>
-          
-          <div class="bg-blue-50 border border-blue-200 rounded-2xl p-5 mt-6">
-            <h4 class="font-bold text-blue-900 mb-4">Current Practices vs. Guidelines</h4>
-            <ul class="space-y-3">
-              <li class="flex justify-between items-center text-sm border-b border-blue-100 pb-2"><span class="text-blue-800">Gait Assessment (Subjective)</span> <span class="bg-red-100 text-red-700 font-bold px-2 py-1 rounded text-xs">Used by 68%</span></li>
-              <li class="flex justify-between items-center text-sm border-b border-blue-100 pb-2"><span class="text-blue-800">Subjective Patient Reporting</span> <span class="bg-red-100 text-red-700 font-bold px-2 py-1 rounded text-xs">Used by 64%</span></li>
-              <li class="flex justify-between items-center text-sm border-b border-blue-100 pb-2"><span class="text-blue-800 font-bold">INCAT Disability Scale (Recommended)</span> <span class="bg-green-100 text-green-700 font-bold px-2 py-1 rounded text-xs">Used by only 30%</span></li>
-              <li class="flex justify-between items-center text-sm"><span class="text-blue-800 font-bold">I-RODS (Recommended)</span> <span class="bg-green-100 text-green-700 font-bold px-2 py-1 rounded text-xs">Used by only 17%</span></li>
-            </ul>
-          </div>
-        </div>
-
-        ${renderQuizComponent('cidp-q3', "Despite guidelines, what methods are most frequently used by neurologists in current practice to determine CIDP treatment response?", ["I-RODS", "INCAT disability scale", "Gait assessment & subjective reporting", "MRC manual muscle test"], 2, "Correct! 68% use gait assessment and 64% use subjective patient reporting, leading to suboptimal monitoring and high discontinuation rates.")}
-        ${renderFooterNav(['cidp','treatment'], ['cidp','case-marcus'], sectionIndex, totalSections, 'Next: Cases')}
-      </div>`;
-
-    if (sectionId === 'case-marcus') return `
-      <div class="space-y-6 max-w-4xl mx-auto slide-up">
-        ${renderCaseHeader('Case Study 1: Marcus', 'Diagnostic Delay', 'Marcus is a 55-year-old male presenting with progressively worsening symmetrical weakness and sensory loss in his legs.', 'M', 'bg-indigo-100 text-indigo-600', sectionIndex, totalSections)}
-        <div class="section-card rounded-3xl p-6">
-          ${renderClinicalVideoBlock('marcus', 'Marcus', 'assets/marcus.jpg', 'assets/marcus.mp4', "Clinical Observation: He was initially misdiagnosed with diabetic polyneuropathy. Over the next 14 months, he underwent 12 different diagnostic procedures, experiencing irreversible disease progression.", { posterMaxClass: 'max-h-[320px] mx-auto rounded-t-xl', fallbackBadge: 'Delayed referral' })}
-          <div class="space-y-3 bg-slate-50 p-5 rounded-2xl border border-slate-100 text-sm mt-6">
-            <p><strong class="text-slate-900">Diagnosis:</strong> After referral to a subspecialist, an electrodiagnostic study correctly identified demyelinating features, confirming typical CIDP.</p>
-          </div>
-        </div>
-
-        ${renderQuizComponent('quiz-marcus', "In a patient like Marcus, what is the median diagnostic delay from symptom onset to confirmed diagnosis across CIDP populations, according to recent real-world evidence?", ["2 weeks", "6.0 months", "21.3 months", "5 years"], 1, "Correct! Real-world evidence demonstrates a median diagnostic delay of 6.0 months, though it can extend up to 21.3 months in misdiagnosed cases.")}
-        ${renderFooterNav(['cidp','monitoring'], ['cidp','case-sarah'], sectionIndex, totalSections, 'Next Case')}
-      </div>`;
-
-    if (sectionId === 'case-sarah') return `
-      <div class="space-y-6 max-w-4xl mx-auto slide-up">
-        ${renderCaseHeader('Case Study 2: Sarah', 'Misdiagnosis Override', 'Sarah is a 42-year-old female presenting with significant proximal weakness and multifocal deficits.', 'S', 'bg-pink-100 text-pink-600', sectionIndex, totalSections)}
-        <div class="section-card rounded-3xl p-6">
-          ${renderClinicalVideoBlock('sarah', 'Sarah', 'assets/sarah.jpg', 'assets/sarah.mp4', "Clinical Observation: Her symptoms of symmetric weakness evolved gradually over 10 weeks. She was initially misdiagnosed with Guillain-Barré syndrome (GBS).", { posterMaxClass: 'max-h-[320px] mx-auto rounded-t-xl', fallbackBadge: 'GBS confusion' })}
-        </div>
-        ${renderQuizComponent('quiz-sarah', "Why was Sarah likely misdiagnosed with GBS instead of CIDP initially?", ["GBS shares overlapping clinical features with CIDP", "She had a completely normal EMG", "Proximal weakness is strictly a sign of diabetic neuropathy"], 0, "Correct! Diagnostic confusion frequently occurs with conditions that share overlapping clinical features, with GBS accounting for 28.7% of initial misdiagnoses.")}
-        ${renderFooterNav(['cidp','case-marcus'], ['cidp','case-david'], sectionIndex, totalSections, 'Next Case')}
-      </div>`;
-
-    if (sectionId === 'case-david') return `
-      <div class="space-y-6 max-w-4xl mx-auto slide-up">
-        ${renderCaseHeader('Case Study 3: David', 'Dose Optimization', 'David is a 60-year-old male who has been receiving maintenance IVIg therapy for 6 months.', 'D', 'bg-slate-200 text-slate-600', sectionIndex, totalSections)}
-        <div class="section-card rounded-3xl p-6">
-          ${renderClinicalVideoBlock('david', 'David', 'assets/david.jpg', 'assets/david.mp4', "Clinical Observation: David wishes to discontinue therapy due to fatigue and a perceived lack of efficacy. His physician has been monitoring his progress using only subjective patient reporting.", { posterMaxClass: 'max-h-[320px] mx-auto rounded-t-xl', fallbackBadge: 'Objective reassessment needed' })}
-        </div>
-        ${renderQuizComponent('quiz-david', "What guideline-recommended step should the physician take to properly assess David's response before considering discontinuation?", ["Switch him immediately to daily corticosteroids", "Reassess using objective scales like I-RODS or INCAT to properly systematize dose titration", "Order an immediate diagnostic nerve biopsy"], 1, "Correct! Treatment efficacy is dose-dependent and requires individualized titration based on objective clinical response (using tools like INCAT or I-RODS), rather than subjective reporting which leads to high discontinuation.")}
-        <div class="section-card rounded-[28px] p-6 md:p-7 bg-gradient-to-r from-emerald-50 to-blue-50 border-emerald-200">
-          <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center"><span class="material-symbols-outlined">check_circle</span></div>
+    function renderCaseHeader(title, subtitle, badge = 'Interactive Case') {
+      return `
+        <div class="section-card p-6 md:p-7 mb-6 mini-grid">
+          <div class="flex flex-wrap items-start justify-between gap-3 case-head-mobile">
             <div>
-              <h3 class="font-bold text-slate-900 text-lg">Module Complete</h3>
-              <p class="text-slate-600 mt-1">You have completed the CIDP Clinical Needs Assessment track covering diagnostic delay, newer treatment options, objective monitoring, and applied case interpretation.</p>
+              <div class="case-kicker mb-3"><span class="material-symbols-outlined text-[16px]">neurology</span>${badge}</div>
+              <h2 class="text-2xl md:text-3xl font-black tracking-tight text-slate-950">${title}</h2>
+              <p class="text-slate-600 mt-3 leading-relaxed max-w-3xl">${subtitle}</p>
+            </div>
+            <div class="pill-stat"><span class="material-symbols-outlined text-[16px] text-blue-600">lab_profile</span>Case-based learning</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function getSectionContent(moduleId, sectionId) {
+      if (sectionId === 'diagnosis') {
+        return sectionShell(`
+          ${heroBlock(
+            'Diagnostic Delays in CIDP',
+            'Overcoming high misdiagnosis rates and fragmented workups so clinicians can recognize CIDP earlier and reduce preventable progression.',
+            [
+              { label: 'Misdiagnosed', value: '68%' },
+              { label: 'Delay window', value: '21+ mo' },
+              { label: 'Avg procedures', value: '19' }
+            ],
+            'Clinical Education'
+          )}
+
+          <div class="section-card p-6 md:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+              <h2 class="text-xl md:text-2xl font-black text-slate-950">The Clinical Gap</h2>
+              <div class="eyebrow-light"><span class="material-symbols-outlined text-[16px]">insights</span>Pattern recognition</div>
+            </div>
+            <div class="text-slate-600 leading-relaxed space-y-5 text-sm md:text-[15px]">
+              <p>Timely recognition of Chronic Inflammatory Demyelinating Polyradiculoneuropathy remains a major hurdle. As many as <strong class="text-slate-950">68%</strong> of patients are initially misdiagnosed, leading to delays that can extend beyond 21 months.</p>
+              <div class="rounded-[24px] bg-amber-50 border border-amber-200 p-5 md:p-6">
+                <div class="eyebrow-light mb-3 !bg-amber-100 !border-amber-200 !text-amber-900"><span class="material-symbols-outlined text-[16px]">warning</span>Diagnostic fragmentation</div>
+                <p class="text-amber-900 text-sm md:text-[15px] leading-relaxed">Patients undergo an average of 19 diagnostic procedures. Compounding this, only 15% of neurologists report always using diagnostic guidelines.</p>
+              </div>
+              ${renderInfoGrid([
+                {
+                  label: 'Best-practice pathway',
+                  text: 'Diagnostic workups should prioritize electrodiagnostic nerve conduction testing, with ultrasound, MRI, CSF analysis, and nerve biopsy used as supportive tools when needed.'
+                },
+                {
+                  label: 'Clinical consequence',
+                  text: 'Delayed recognition can allow progressive weakness, sensory loss, and functional decline to continue while patients are treated for the wrong disorder.'
+                }
+              ])}
             </div>
           </div>
-        </div>
-        ${renderFooterNav(['cidp','case-sarah'], null, sectionIndex, totalSections, 'Complete Module')}
-      </div>`;
-    
-    return '';
-  }
 
-  function renderMiniHero(title, description, icon, current, total) {
-    const iconName = icon === 'biotech' ? 'biotech' : 'monitoring';
-    return `
-      <section class="hero-panel rounded-[28px] p-7 md:p-8 text-white overflow-hidden relative">
-        <div class="flex items-start justify-between gap-4 relative z-10">
-          <div class="max-w-2xl">
-            <div class="text-xs uppercase tracking-[0.26em] text-blue-100 font-bold mb-3">Section ${String(current).padStart(2,'0')} of ${String(total).padStart(2,'0')}</div>
-            <h2 class="text-3xl font-extrabold mb-3">${title}</h2>
-            <p class="text-blue-100/95 leading-relaxed max-w-2xl">${description}</p>
-          </div>
-          <div class="hidden md:flex w-16 h-16 rounded-2xl bg-white/10 border border-white/15 items-center justify-center flex-shrink-0">
-            <span class="material-symbols-outlined text-3xl">${iconName}</span>
-          </div>
-        </div>
-      </section>`;
-  }
-
-  function renderCaseHeader(title, subtitle, description, initial, avatarClass, current, total) {
-    return `
-      <section class="hero-panel rounded-[28px] p-7 md:p-8 text-white overflow-hidden relative">
-        <div class="flex flex-wrap items-start justify-between gap-4 relative z-10">
-          <div class="flex items-start gap-4 max-w-3xl">
-            <div class="w-14 h-14 rounded-2xl ${avatarClass} flex items-center justify-center text-xl font-extrabold shadow-sm flex-shrink-0">${initial}</div>
-            <div>
-              <div class="text-xs uppercase tracking-[0.26em] text-blue-100 font-bold mb-2">Section ${String(current).padStart(2,'0')} of ${String(total).padStart(2,'0')}</div>
-              <h2 class="text-3xl font-extrabold mb-1">${title}</h2>
-              <div class="text-blue-100 font-semibold mb-3">${subtitle}</div>
-              <p class="text-blue-100/95 leading-relaxed">${description}</p>
-            </div>
-          </div>
-          <span class="px-3.5 py-2 elite-stat text-white rounded-full text-xs font-bold uppercase tracking-[0.18em]">Interactive Case</span>
-        </div>
-      </section>`;
-  }
-
-  function renderFooterNav(prev, next, current, total, nextLabel) {
-    return `
-      <div class="section-card rounded-[28px] p-4 md:p-5">
-        <div class="flex items-center justify-between gap-4 flex-wrap">
-          <div class="text-sm text-slate-500 font-medium">Section ${current} of ${total}</div>
-          <div class="flex items-center gap-3 flex-wrap">
-            ${prev ? `<button onclick="navigateTo('${prev[0]}', '${prev[1]}')" class="text-slate-500 hover:text-blue-600 font-medium flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-slate-50"><span class="material-symbols-outlined">arrow_back</span> Back</button>` : `<div></div>`}
-            ${next ? `<button onclick="navigateTo('${next[0]}', '${next[1]}')" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition flex items-center gap-2 shadow-md">${nextLabel} <span class="material-symbols-outlined">arrow_forward</span></button>` : `<button class="bg-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-700 transition flex items-center gap-2 shadow-md">${nextLabel} <span class="material-symbols-outlined">check_circle</span></button>`}
-          </div>
-        </div>
-      </div>`;
-  }
-
-  function renderQuizComponent(id, question, options, correctIndex, explanation) {
-    const state = quizStates[id] || { submitted: false, selected: null };
-    const isCorrect = state.selected === correctIndex;
-    let optionsHtml = options.map((opt, idx) => {
-      let style = `bg-white border-slate-200 ${hoverClassMap.blue}`;
-      let icon = '<div class="w-5 h-5 rounded-full border border-slate-300"></div>';
-      
-      if (!state.submitted && state.selected === idx) {
-        style = `bg-blue-50 border-blue-500 ring-1 ring-blue-500 shadow-sm`;
-        icon = `<div class="w-5 h-5 rounded-full border border-blue-500 bg-white flex items-center justify-center"><div class="w-2.5 h-2.5 rounded-full bg-blue-500"></div></div>`;
-      } else if (state.submitted) {
-        if (idx === correctIndex) {
-          style = "bg-green-50 border-green-200 ring-1 ring-green-500 shadow-sm";
-          icon = '<div class="w-5 h-5 rounded-full bg-green-500 border-green-500 flex items-center justify-center"><span class="material-symbols-outlined text-white text-sm">check</span></div>';
-        } else if (idx === state.selected) {
-          style = "bg-red-50 border-red-200 ring-1 ring-red-500 shadow-sm";
-          icon = '<div class="w-5 h-5 rounded-full border-red-500 flex items-center justify-center"><span class="material-symbols-outlined text-red-500 text-sm">close</span></div>';
-        } else {
-          style = "bg-slate-50 border-slate-200 opacity-60";
-        }
+          ${renderQuizComponent(
+            'cidp-q1',
+            'What is the recommended primary, objective diagnostic tool for a patient who meets the clinical criteria for CIDP?',
+            [
+              'Magnetic Resonance Imaging (MRI)',
+              'Cerebrospinal fluid (CSF) analysis',
+              'Electrodiagnostic nerve conduction testing',
+              'Diagnostic nerve biopsy'
+            ],
+            2,
+            'Correct. Structured diagnostic testing should initially focus on electrodiagnostic nerve conduction testing, which can then be supported by other clinical features.'
+          )}
+        `, { badge: 'Diagnostic strategy' });
       }
-      const clickAttr = !state.submitted ? `onclick="selectQuizOption('${id}', ${idx})"` : '';
-      return `<div ${clickAttr} class="choice-card p-4 rounded-2xl border cursor-pointer transition-all duration-200 flex items-center gap-3 mb-3 ${style}">${icon}<span class="text-sm ${state.submitted && idx === correctIndex ? 'font-bold text-green-900' : 'text-slate-700'}">${opt}</span></div>`;
-    }).join('');
-    
-    let feedback = state.submitted ? `<div class="mt-6 p-4 rounded-2xl ${isCorrect ? "bg-green-100 text-green-900 border border-green-200" : "bg-red-50 text-red-900 border border-red-200"} animate-in fade-in"><div class="flex items-center gap-2 font-bold mb-2"><span class="material-symbols-outlined">${isCorrect ? "check_circle" : "cancel"}</span>${isCorrect ? "Correct!" : "Incorrect"}</div><p class="text-sm leading-relaxed">${explanation}</p></div>` : `<button onclick="submitQuiz('${id}', ${correctIndex})" class="mt-4 w-full py-3 rounded-xl font-bold transition-all text-white ${state.selected !== null ? `bg-blue-600 hover:bg-blue-700 shadow-md` : 'bg-slate-200 text-slate-400 cursor-not-allowed'}" ${state.selected === null ? 'disabled' : ''}>Submit Answer</button>`;
-    
-    return `<div class="section-card rounded-[28px] p-6 md:p-7 my-6 scale-in" id="${id}"><div class="flex flex-wrap items-center gap-2 mb-4"><span class="bg-blue-100 text-blue-700 text-xs px-2.5 py-1 rounded-full uppercase tracking-[0.18em] font-bold">Knowledge Check</span><div class="soft-divider flex-1 min-w-[60px]"></div></div><h3 class="font-semibold text-slate-900 mb-4 text-lg leading-snug">${question}</h3><div>${optionsHtml}</div>${feedback}</div>`;
-  }
 
-  function renderClinicalVideoBlock(key, name, posterSrc, videoSrc, observationText, opts = {}) {
-    const posterMaxClass = opts.posterMaxClass ? opts.posterMaxClass : '';
-    const fallbackBadge = opts.fallbackBadge || 'Clinical insight';
-    const posterIsVideo = /\.mp4(\?|#|$)/i.test(posterSrc || '');
-    const posterMarkup = posterIsVideo
-      ? `<div class="poster-fallback-card w-full ${posterMaxClass} p-6 md:p-8 flex flex-col justify-between">
-          <div class="flex items-start justify-between gap-4">
-            <div>
-              <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-[11px] font-bold uppercase tracking-[0.2em] text-blue-100">${fallbackBadge}</div>
-              <div class="mt-4 text-white text-2xl md:text-3xl font-black tracking-tight">${name}</div>
-              <div class="text-blue-100 mt-2 max-w-xl text-sm md:text-base leading-relaxed">Preview-ready clinical observation mode for a premium case launch experience.</div>
+      if (sectionId === 'treatment') {
+        return sectionShell(`
+          ${heroBlock(
+            'Integrating Newer Therapies',
+            'Guideline-recommended interventions often lack sequencing data for newly approved agents. Clinicians must actively integrate recent efficacy and safety findings into their treatment algorithms.',
+            [
+              { label: 'IVIg 10%', value: '2024' },
+              { label: 'FcRn blocker', value: 'Efgartigimod' },
+              { label: 'Response data', value: '94.4%' }
+            ],
+            'Therapeutic Innovation'
+          )}
+
+          <div class="grid gap-4">
+            <div class="section-card p-6 md:p-7 border-l-[5px] border-blue-500">
+              <div class="eyebrow-light mb-3"><span class="material-symbols-outlined text-[16px]">tactic</span>Newly approved option</div>
+              <h3 class="font-black text-lg md:text-xl text-slate-900 mb-2">10% IVIg (Approved 2024)</h3>
+              <p class="text-sm md:text-[15px] text-slate-600 leading-relaxed">Demonstrated a 94.4% treatment response rate in the ADVANCE-CIDP 2 trial based on improvements in INCAT-recorded functional disability.</p>
             </div>
-            <div class="hidden md:flex w-14 h-14 rounded-2xl bg-white/10 border border-white/15 items-center justify-center text-white">
-              <span class="material-symbols-outlined text-3xl">movie</span>
+            <div class="section-card p-6 md:p-7 border-l-[5px] border-purple-500">
+              <div class="eyebrow-light mb-3"><span class="material-symbols-outlined text-[16px]">biotech</span>Mechanism-driven therapy</div>
+              <h3 class="font-black text-lg md:text-xl text-slate-900 mb-2">Efgartigimod alfa + hyaluronidase-qvfc (Approved 2024)</h3>
+              <p class="text-sm md:text-[15px] text-slate-600 leading-relaxed">An FcRn-based subcutaneous injection that demonstrated a lower relapse rate compared with placebo. It competes with IgG to reduce their recycling.</p>
+            </div>
+            <div class="section-card p-6 md:p-7 border-l-[5px] border-indigo-500">
+              <div class="eyebrow-light mb-3"><span class="material-symbols-outlined text-[16px]">medication</span>Clinical takeaway</div>
+              <p class="text-sm md:text-[15px] text-slate-600 leading-relaxed">Newer options expand treatment discussions beyond traditional corticosteroids and IVIg maintenance alone, giving clinicians more individualized pathways when relapse risk or tolerability becomes a concern.</p>
             </div>
           </div>
-          <div class="poster-grid mt-8">
-            <div></div><div></div><div></div>
+
+          ${renderQuizComponent(
+            'cidp-q2',
+            'Which recently approved therapeutic agent for CIDP operates as a neonatal Fc receptor blocker?',
+            [
+              '10% IVIg',
+              'Corticosteroids',
+              '10% SCIg + rHuPH20',
+              'Efgartigimod alfa + hyaluronidase-qvfc'
+            ],
+            3,
+            'Correct. Efgartigimod alfa works as an FcRn blocker that competes with IgG to reduce their recycling, leaving them free to be degraded in cellular lysosomes.'
+          )}
+        `, { badge: 'Precision therapy' });
+      }
+
+      if (sectionId === 'monitoring') {
+        return sectionShell(`
+          ${heroBlock(
+            'Objective Monitoring Tools',
+            'Current practice still leans too heavily on subjective reporting. Better monitoring creates a more reliable path for titration, treatment durability, and confident clinical decisions.',
+            [
+              { label: 'Gait use', value: '68%' },
+              { label: 'Subjective', value: '64%' },
+              { label: 'INCAT use', value: '30%' }
+            ],
+            'Longitudinal Care'
+          )}
+
+          <div class="section-card p-6 md:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+              <h2 class="text-xl md:text-2xl font-black text-slate-950">The Problem with Subjective Reporting</h2>
+              <div class="eyebrow-light"><span class="material-symbols-outlined text-[16px]">monitoring</span>Reliable tracking</div>
+            </div>
+            <p class="text-slate-600 text-sm md:text-[15px] leading-relaxed mb-5">Standardized monitoring is severely underutilized. This poor monitoring contributes to a <strong class="text-slate-950">35% treatment discontinuation rate</strong> in the first 4 months of IVIg therapy.</p>
+            <div class="rounded-[24px] bg-blue-50 border border-blue-200 p-5 md:p-6">
+              <h4 class="font-black text-blue-950 text-lg mb-4">Current Practices vs. Guidelines</h4>
+              <div class="grid gap-3">
+                <div class="rounded-2xl bg-white/90 border border-blue-100 px-4 py-4 text-sm md:text-[15px] flex items-center justify-between gap-4"><span class="text-blue-900">Gait assessment (subjective)</span><span class="font-extrabold text-red-700">Used by 68%</span></div>
+                <div class="rounded-2xl bg-white/90 border border-blue-100 px-4 py-4 text-sm md:text-[15px] flex items-center justify-between gap-4"><span class="text-blue-900">Subjective patient reporting</span><span class="font-extrabold text-red-700">Used by 64%</span></div>
+                <div class="rounded-2xl bg-white/90 border border-blue-100 px-4 py-4 text-sm md:text-[15px] flex items-center justify-between gap-4"><span class="text-blue-900 font-bold">INCAT disability scale</span><span class="font-extrabold text-emerald-700">Used by 30%</span></div>
+                <div class="rounded-2xl bg-white/90 border border-blue-100 px-4 py-4 text-sm md:text-[15px] flex items-center justify-between gap-4"><span class="text-blue-900 font-bold">I-RODS</span><span class="font-extrabold text-emerald-700">Used by 17%</span></div>
+              </div>
+            </div>
           </div>
-        </div>`
-      : `<img src="${posterSrc}" alt="${name}" class="w-full h-full object-cover opacity-90 group-hover:opacity-100 transition ${posterMaxClass}" />`;
-    return `
-<div class="my-2 rounded-[30px] overflow-hidden shadow-[0_24px_60px_rgba(15,23,42,0.14)] border border-white/70 relative group/media bg-white" data-clinical-video-block="1" data-cv-key="${key}">
- <div class="absolute top-3 right-3 z-20 flex gap-2 opacity-0 group-hover/media:opacity-100 transition-opacity duration-300">
-   <div class="group/dl relative">
-     <button type="button" onclick="event.stopPropagation(); downloadMedia('${posterSrc}', '${name}_poster.jpg')" class="bg-slate-900/60 hover:bg-blue-600 text-white p-2.5 rounded-full backdrop-blur transition-all flex items-center justify-center shadow-md border border-white/20">
-       <span class="material-symbols-outlined text-sm">image</span>
-     </button>
-     <div class="tooltip-dl absolute -bottom-10 right-0 whitespace-nowrap bg-slate-900 text-white text-xs px-2 py-1 rounded opacity-0 translate-y-1 transition-all pointer-events-none">Download Image</div>
-   </div>
-   <div class="group/dl relative">
-     <button type="button" onclick="event.stopPropagation(); downloadMedia('${videoSrc}', '${name}_video.mp4')" class="bg-slate-900/60 hover:bg-blue-600 text-white p-2.5 rounded-full backdrop-blur transition-all flex items-center justify-center shadow-md border border-white/20">
-       <span class="material-symbols-outlined text-sm">movie</span>
-     </button>
-     <div class="tooltip-dl absolute -bottom-10 right-0 whitespace-nowrap bg-slate-900 text-white text-xs px-2 py-1 rounded opacity-0 translate-y-1 transition-all pointer-events-none">Download Video</div>
-   </div>
- </div>
 
- <button type="button" class="w-full relative block bg-black group fade-swap swap-visible" data-cv-poster aria-label="Play ${name} clinical observation video">
-  ${posterMarkup}
-  <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-   <div class="h-16 w-16 rounded-full bg-white/88 backdrop-blur border border-white/60 shadow-lg flex items-center justify-center group-hover:scale-105 transition">
-    <svg viewBox="0 0 24 24" class="w-7 h-7 text-slate-900 translate-x-[1px]" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
-   </div>
-  </div>
-  <div class="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/80 via-black/35 to-transparent text-left pointer-events-none">
-   <div class="text-white font-semibold text-lg">Clinical Observation</div>
-   <div class="text-white/80 text-sm">Click to play or launch the simulated observation view</div>
-  </div>
- </button>
- 
- <div class="hidden relative fade-swap swap-hidden" data-cv-wrap>
-  <video class="w-full h-auto bg-black" data-cv-video preload="metadata" playsinline><source src="${videoSrc}" type="video/mp4"></video>
-  <div class="hidden case-fallback text-white p-8" data-cv-fallback>
-    <div class="max-w-2xl mx-auto">
-      <div class="flex items-center gap-2 mb-4 text-blue-200 text-xs font-bold uppercase tracking-[0.22em]">
-        <span class="material-symbols-outlined text-sm">visibility</span>
-        Simulated Clinical Observation
-      </div>
-      <h3 class="text-2xl font-extrabold mb-3">${name} Observation Scene</h3>
-      <p class="text-slate-200 leading-relaxed text-base">${observationText}</p>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-6">
-        <div class="rounded-2xl bg-white/10 border border-white/10 p-4">
-          <div class="text-xs uppercase tracking-[0.18em] text-blue-200 font-bold mb-1">Pattern</div>
-          <div class="text-sm text-white/90">Symptom progression and clinical clues are highlighted for guided review.</div>
-        </div>
-        <div class="rounded-2xl bg-white/10 border border-white/10 p-4">
-          <div class="text-xs uppercase tracking-[0.18em] text-blue-200 font-bold mb-1">Teaching Point</div>
-          <div class="text-sm text-white/90">Learners focus on differential reasoning instead of a blank media placeholder.</div>
-        </div>
-        <div class="rounded-2xl bg-white/10 border border-white/10 p-4">
-          <div class="text-xs uppercase tracking-[0.18em] text-blue-200 font-bold mb-1">Clinical Use</div>
-          <div class="text-sm text-white/90">Preserves the exact module flow when MP4 assets are unavailable.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="hidden buffering-overlay pointer-events-none" data-cv-buffering aria-hidden="true"><div class="spinner"></div></div>
-  <button type="button" class="hidden absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-[1px]" data-cv-replay>
-   <div class="flex flex-col items-center gap-3">
-    <div class="h-16 w-16 rounded-full bg-white/90 border border-white/70 shadow-lg flex items-center justify-center"><span class="material-symbols-outlined text-slate-900 text-4xl">replay</span></div>
-    <div class="text-white font-semibold">Replay</div>
-   </div>
-  </button>
-  <div class="bg-slate-900 text-white p-6 text-center">
-   <h3 class="font-semibold text-xl mb-3">Clinical Observation</h3>
-   <p class="text-slate-300 max-w-2xl mx-auto leading-relaxed text-lg">${observationText}</p>
-  </div>
- </div>
-</div>`;
-  }
+          ${renderQuizComponent(
+            'cidp-q3',
+            'Despite guidelines, what methods are most frequently used by neurologists in current practice to determine CIDP treatment response?',
+            [
+              'I-RODS',
+              'INCAT disability scale',
+              'Gait assessment and subjective reporting',
+              'MRC manual muscle test'
+            ],
+            2,
+            'Correct. Sixty-eight percent use gait assessment and 64 percent use subjective patient reporting, leading to suboptimal monitoring and high discontinuation rates.'
+          )}
+        `, { badge: 'Care coordination' });
+      }
 
-function initClinicalVideos() {
-    const blocks = document.querySelectorAll('[data-clinical-video-block="1"]');
-    if (!blocks.length) return;
-    const isHoverDesktop = window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches;
-    blocks.forEach(block => {
-      const posterBtn = block.querySelector('[data-cv-poster]');
-      const wrap = block.querySelector('[data-cv-wrap]');
-      const video = block.querySelector('[data-cv-video]');
-      const buffering = block.querySelector('[data-cv-buffering]');
-      const replay = block.querySelector('[data-cv-replay]');
-      const fallback = block.querySelector('[data-cv-fallback]');
-      if (!posterBtn || !wrap || !video) return;
+      if (sectionId === 'case-marcus') {
+        return sectionShell(`
+          ${renderCaseHeader('Case Study 1: Marcus', 'Marcus is a 55-year-old male presenting with progressively worsening symmetrical weakness and sensory loss in his legs.', 'Diagnostic Delay')}
 
-      if (isHoverDesktop) {
-        block.addEventListener('mouseenter', () => { if (!video.dataset.fallbackActive) video.setAttribute('controls', ''); });
-        block.addEventListener('mouseleave', () => { if (!video.dataset.fallbackActive) video.removeAttribute('controls'); });
+          <div class="section-card p-6 md:p-7">
+            <div class="flex gap-4 items-start">
+              <div class="w-12 h-12 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-black text-lg flex-shrink-0">M</div>
+              <div>
+                <h3 class="text-lg md:text-xl font-black text-slate-950">Delayed Referral</h3>
+                <p class="text-slate-600 mt-2 text-sm md:text-[15px] leading-relaxed">Marcus was initially misdiagnosed with diabetic polyneuropathy. Over the next 14 months, he underwent multiple diagnostic procedures while his weakness continued to progress.</p>
+              </div>
+            </div>
+
+            ${renderClinicalVideoBlock(
+              'marcus-cidp',
+              'Marcus',
+              'assets/marcus.jpg',
+              'assets/marcus.mp4',
+              'Clinical Observation: He was initially misdiagnosed with diabetic polyneuropathy. Over the next 14 months, he underwent 12 different diagnostic procedures, experiencing irreversible disease progression.',
+              { posterLabel: 'Clinical Observation', fallbackBadge: 'Delayed referral', fallbackTone: 'Escalating weakness and a prolonged diagnostic pathway.' }
+            )}
+
+            <div class="rounded-[24px] bg-slate-50 border border-slate-200 p-5 md:p-6 text-sm md:text-[15px]">
+              <div class="eyebrow-light mb-3"><span class="material-symbols-outlined text-[16px]">clinical_notes</span>Diagnostic summary</div>
+              <p class="text-slate-700 leading-relaxed"><strong class="text-slate-950">Diagnosis:</strong> After referral to a subspecialist, an electrodiagnostic study correctly identified demyelinating features, confirming typical CIDP.</p>
+            </div>
+          </div>
+
+          ${renderQuizComponent(
+            'quiz-marcus-cidp',
+            'In a patient like Marcus, what is the median diagnostic delay from symptom onset to confirmed diagnosis across CIDP populations, according to recent real-world evidence?',
+            [
+              '2 weeks',
+              '6.0 months',
+              '21.3 months',
+              '5 years'
+            ],
+            1,
+            'Correct. Real-world evidence demonstrates a median diagnostic delay of 6.0 months, though it can extend up to 21.3 months in misdiagnosed cases.'
+          )}
+        `, { badge: 'Case application' });
+      }
+
+      if (sectionId === 'case-sarah') {
+        return sectionShell(`
+          ${renderCaseHeader('Case Study 2: Sarah', 'Sarah is a 42-year-old female presenting with significant proximal weakness and multifocal deficits.', 'Misdiagnosis Override')}
+
+          <div class="section-card p-6 md:p-7">
+            <div class="flex gap-4 items-start">
+              <div class="w-12 h-12 rounded-full bg-pink-100 text-pink-700 flex items-center justify-center font-black text-lg flex-shrink-0">S</div>
+              <div>
+                <h3 class="text-lg md:text-xl font-black text-slate-950">GBS Confusion</h3>
+                <p class="text-slate-600 mt-2 text-sm md:text-[15px] leading-relaxed">Sarah's symptoms evolved gradually over 10 weeks. She was initially misdiagnosed with Guillain-Barré syndrome before CIDP features were recognized.</p>
+              </div>
+            </div>
+
+            ${renderClinicalVideoBlock(
+              'sarah-cidp',
+              'Sarah',
+              '',
+              'assets/case 2.mp4',
+              'Clinical Observation: Her symptoms of symmetric weakness evolved gradually over 10 weeks. She was initially misdiagnosed with Guillain-Barré syndrome.',
+              { posterLabel: 'Clinical Observation', fallbackBadge: 'GBS confusion', fallbackTone: 'Overlapping features can obscure CIDP during the early workup.' }
+            )}
+          </div>
+
+          ${renderQuizComponent(
+            'quiz-sarah-cidp',
+            'Why was Sarah likely misdiagnosed with GBS instead of CIDP initially?',
+            [
+              'GBS shares overlapping clinical features with CIDP',
+              'She had a completely normal EMG',
+              'Proximal weakness is strictly a sign of diabetic neuropathy'
+            ],
+            0,
+            'Correct. Diagnostic confusion frequently occurs with conditions that share overlapping clinical features, with GBS accounting for 28.7% of initial misdiagnoses.'
+          )}
+        `, { badge: 'Differential reasoning' });
+      }
+
+      if (sectionId === 'case-david') {
+        return sectionShell(`
+          ${renderCaseHeader('Case Study 3: David', 'David is a 60-year-old male who has been receiving maintenance IVIg therapy for 6 months.', 'Dose Optimization')}
+
+          <div class="section-card p-6 md:p-7">
+            <div class="flex gap-4 items-start">
+              <div class="w-12 h-12 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center font-black text-lg flex-shrink-0">D</div>
+              <div>
+                <h3 class="text-lg md:text-xl font-black text-slate-950">Objective Reassessment Needed</h3>
+                <p class="text-slate-600 mt-2 text-sm md:text-[15px] leading-relaxed">David wishes to discontinue therapy due to fatigue and a perceived lack of efficacy. His response has only been monitored through subjective patient reporting.</p>
+              </div>
+            </div>
+
+            ${renderClinicalVideoBlock(
+              'david-cidp',
+              'David',
+              '',
+              'assets/case 3.mp4',
+              'Clinical Observation: David wishes to discontinue therapy due to fatigue and a perceived lack of efficacy. His physician has been monitoring his progress using only subjective patient reporting.',
+              { posterLabel: 'Clinical Observation', fallbackBadge: 'Objective monitoring', fallbackTone: 'Reassess efficacy with validated scales before changing maintenance therapy.' }
+            )}
+          </div>
+
+          ${renderQuizComponent(
+            'quiz-david-cidp',
+            'What guideline-recommended step should the physician take to properly assess David\'s response before considering discontinuation?',
+            [
+              'Switch him immediately to daily corticosteroids',
+              'Reassess using objective scales like I-RODS or INCAT to properly systematize dose titration',
+              'Order an immediate diagnostic nerve biopsy'
+            ],
+            1,
+            'Correct. Treatment efficacy is dose-dependent and requires individualized titration based on objective clinical response using tools like INCAT or I-RODS rather than subjective reporting alone.'
+          )}
+
+          <div class="section-card p-6 md:p-7 bg-gradient-to-r from-emerald-50 to-blue-50 border-emerald-200">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center"><span class="material-symbols-outlined">check_circle</span></div>
+              <div>
+                <h3 class="font-black text-slate-900 text-lg">Module Complete</h3>
+                <p class="text-slate-600 mt-1">You have completed the CIDP Clinical Needs Assessment track covering diagnostic delay, newer treatment options, objective monitoring, and applied case interpretation.</p>
+              </div>
+            </div>
+          </div>
+        `, { badge: 'Completion' });
+      }
+
+      return '';
+    }
+
+    function initClinicalVideos() {
+      const blocks = document.querySelectorAll('[data-clinical-video-block="1"]');
+      blocks.forEach(block => {
+        const posterBtn = block.querySelector('[data-cv-poster]');
+        const wrap = block.querySelector('[data-cv-wrap]');
+        const replayBtn = block.querySelector('[data-cv-replay]');
+        const progressBar = block.querySelector('[data-cv-progress]');
+        const status = block.querySelector('[data-cv-status]');
+        const video = block.querySelector('[data-cv-video]');
+        if (!posterBtn || !wrap || !video) return;
+
+        const updateStatus = pct => {
+          if (!status) return;
+          if (pct < 10) status.textContent = 'Opening case';
+          else if (pct < 35) status.textContent = 'Reviewing presentation';
+          else if (pct < 70) status.textContent = 'Assessing findings';
+          else if (pct < 100) status.textContent = 'Observation in progress';
+          else status.textContent = 'Observation complete';
+        };
+
+        const syncProgress = () => {
+          if (!progressBar) return;
+          const pct = video.duration ? Math.min(100, (video.currentTime / video.duration) * 100) : 0;
+          progressBar.style.width = `${pct}%`;
+          updateStatus(pct);
+        };
+
+        const showVideo = () => {
+          posterBtn.style.display = 'none';
+          wrap.classList.add('visible');
+          requestAnimationFrame(() => wrap.scrollIntoView({ behavior: 'smooth', block: 'center' }));
+          const playPromise = video.play();
+          if (playPromise && typeof playPromise.catch === 'function') {
+            playPromise.catch(() => {
+              if (status) status.textContent = 'Ready to play';
+            });
+          }
+          if (status) status.textContent = 'Opening case';
+        };
+
+        posterBtn.addEventListener('click', showVideo);
+        video.addEventListener('timeupdate', syncProgress);
+        video.addEventListener('loadedmetadata', syncProgress);
+        video.addEventListener('play', () => status && (status.textContent = 'Observation in progress'));
+        video.addEventListener('ended', () => {
+          if (progressBar) progressBar.style.width = '100%';
+          if (status) status.textContent = 'Observation complete';
+        });
+        video.addEventListener('pause', () => {
+          if (!video.ended && status && video.currentTime > 0) status.textContent = 'Paused';
+        });
+
+        if (replayBtn) {
+          replayBtn.addEventListener('click', event => {
+            event.stopPropagation();
+            video.currentTime = 0;
+            const playPromise = video.play();
+            if (playPromise && typeof playPromise.catch === 'function') playPromise.catch(() => {});
+            if (progressBar) progressBar.style.width = '0%';
+            if (status) status.textContent = 'Opening case';
+          });
+        }
+      });
+    }
+
+    function updateProgressUI() {
+      const info = getProgressInfo();
+      const percentText = `${info.percent}%`;
+      const countText = `${info.position} of ${info.total}`;
+      document.getElementById('sidebar-progress-bar').style.width = percentText;
+      document.getElementById('sidebar-progress-label').textContent = percentText;
+      document.getElementById('sidebar-progress-count').textContent = countText;
+    }
+
+    function renderSidebar() {
+      const container = document.getElementById('nav-container');
+      const module = appData.modules[activeModuleId];
+      container.innerHTML = module.sections.map(section => {
+        const isActive = section.id === activeSectionId;
+        return `
+          <button onclick="navigateTo('${activeModuleId}', '${section.id}')" class="nav-card ${isActive ? 'active' : ''}">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl flex items-center justify-center ${isActive ? 'bg-white/12 text-white border border-white/16' : 'bg-slate-100 text-blue-600'}">
+                <span class="material-symbols-outlined text-[18px]">${section.icon}</span>
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="font-bold text-sm truncate">${section.title}</div>
+                <div class="text-[11px] mt-1 ${isActive ? 'text-blue-100/80' : 'text-slate-400'} uppercase tracking-[0.18em] font-bold">${isActive ? 'Current section' : 'Available'}</div>
+              </div>
+            </div>
+          </button>
+        `;
+      }).join('');
+      updateProgressUI();
+    }
+
+    function renderMainContent() {
+      const module = appData.modules[activeModuleId];
+      const section = module.sections.find(item => item.id === activeSectionId);
+      document.getElementById('breadcrumb-module').textContent = module.title;
+      document.getElementById('breadcrumb-section').textContent = section.title;
+      document.getElementById('mobile-current-section').textContent = section.title;
+
+      const contentContainer = document.getElementById('main-content');
+      contentContainer.innerHTML = getSectionContent(activeModuleId, activeSectionId);
+      contentContainer.scrollTop = 0;
+
+      renderSidebar();
+      initClinicalVideos();
+
+      if (window.innerWidth < 768) {
+        document.getElementById('sidebar').classList.add('-translate-x-full');
+        document.getElementById('sidebar-overlay').classList.add('hidden');
+      }
+    }
+
+    function navigateTo(modId, secId) {
+      activeModuleId = modId;
+      activeSectionId = secId;
+      renderMainContent();
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+      const isClosed = sidebar.classList.contains('-translate-x-full');
+      if (isClosed) {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
       } else {
-        video.setAttribute('controls', '');
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
       }
+    }
 
-      const showVideoWrap = () => {
-        posterBtn.classList.add('swap-hidden');
-        posterBtn.classList.remove('swap-visible');
-        posterBtn.disabled = true;
-        wrap.classList.remove('hidden');
-        requestAnimationFrame(() => {
-          wrap.classList.remove('swap-hidden');
-          wrap.classList.add('swap-visible');
-        });
-        wrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      };
-
-      const activateFallback = () => {
-        video.dataset.fallbackActive = '1';
-        video.classList.add('hidden');
-        if (buffering) buffering.classList.add('hidden');
-        if (fallback) fallback.classList.remove('hidden');
-        if (replay) replay.classList.add('hidden');
-      };
-
-      posterBtn.addEventListener('click', () => {
-        showVideoWrap();
-        const attempt = video.play();
-        if (attempt && typeof attempt.then === 'function') {
-          attempt.catch(() => activateFallback());
-        }
-      });
-
-      if (replay) {
-        replay.addEventListener('click', () => {
-          replay.classList.add('hidden');
-          try { video.currentTime = 0; } catch(e) {}
-          const p = video.play();
-          if (p && typeof p.then === 'function') p.catch(() => activateFallback());
-        });
+    function goToNextSection() {
+      const { next } = getPrevNextSections();
+      if (next) {
+        navigateTo(activeModuleId, next.id);
+      } else {
+        showToast('You reached the final section');
       }
+    }
 
-      const showBuffer = () => buffering && !video.dataset.fallbackActive && buffering.classList.remove('hidden');
-      const hideBuffer = () => buffering && buffering.classList.add('hidden');
-      video.addEventListener('waiting', showBuffer);
-      video.addEventListener('stalled', showBuffer);
-      video.addEventListener('playing', hideBuffer);
-      video.addEventListener('canplay', hideBuffer);
-      video.addEventListener('pause', hideBuffer);
-      video.addEventListener('ended', () => {
-        hideBuffer();
-        if (replay && !video.dataset.fallbackActive) replay.classList.remove('hidden');
-      });
-      video.addEventListener('error', activateFallback);
+    window.selectQuizOption = function (quizId, index) {
+      if (!quizStates[quizId]) quizStates[quizId] = { submitted: false, selected: null };
+      quizStates[quizId].selected = index;
+      renderMainContent();
+      const target = document.getElementById(quizId);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+
+    window.submitQuiz = function (quizId) {
+      if (!quizStates[quizId] || quizStates[quizId].selected === null) return;
+      quizStates[quizId].submitted = true;
+      renderMainContent();
+      const target = document.getElementById(quizId);
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      showToast('Answer submitted');
+    };
+
+    window.addEventListener('resize', () => {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+      if (window.innerWidth >= 768) {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+      } else {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+        document.body.classList.remove('overflow-hidden');
+      }
     });
-  }
 
-  function updateProgressUI() {
-    const module = appData.modules[activeModuleId];
-    const currentIndex = getSectionIndex(activeModuleId, activeSectionId) + 1;
-    const total = module.sections.length;
-    const percent = Math.max(0, Math.min(100, (currentIndex / total) * 100));
-    document.getElementById('sidebar-progress-text').textContent = `${currentIndex} / ${total}`;
-    document.getElementById('sidebar-progress-bar').style.width = `${percent}%`;
-    document.getElementById('header-step-index').textContent = String(currentIndex).padStart(2,'0');
-    document.getElementById('header-step-total').textContent = String(total).padStart(2,'0');
-  }
-
-  function renderSidebar() {
-    const container = document.getElementById('nav-container');
-    let html = '';
-    for (const modKey in appData.modules) {
-      const module = appData.modules[modKey];
-      const activeClassColor = activeClassMap[module.color] || activeClassMap.blue;
-      html += `<div class="mb-6"><h3 class="text-xs font-bold text-slate-400 uppercase tracking-[0.18em] mb-2 px-3">${module.title}</h3><div class="space-y-1.5">`;
-      module.sections.forEach(section => {
-        const isActive = activeModuleId === modKey && activeSectionId === section.id;
-        const btnClass = isActive ? `${activeClassColor} font-semibold` : 'text-slate-600 hover:bg-white hover:text-slate-900 border border-transparent hover:border-blue-100 hover:shadow-[0_12px_28px_rgba(15,23,42,0.06)]';
-        html += `<button onclick="navigateTo('${modKey}', '${section.id}')" class="w-full text-left px-3 py-3 rounded-[20px] text-sm flex items-center gap-3 transition-all ${btnClass}"><span class="material-symbols-outlined text-[18px] opacity-70">${section.icon}</span><span class="flex-1 font-semibold">${section.title}</span><span class="w-2 h-2 rounded-full bg-blue-200/80"></span></button>`;
-      });
-      html += `</div></div>`;
-    }
-    container.innerHTML = html;
-  }
-
-  function renderMainContent() {
-    const module = appData.modules[activeModuleId];
-    const section = module.sections.find(s => s.id === activeSectionId);
-    document.getElementById('breadcrumb-module').textContent = module.title;
-    document.getElementById('breadcrumb-section').textContent = section.title;
-    const contentContainer = document.getElementById('main-content');
-    contentContainer.innerHTML = getSectionContent(activeModuleId, activeSectionId);
-    contentContainer.scrollTop = 0;
-    renderSidebar();
-    updateProgressUI();
-    initClinicalVideos();
-    if (window.innerWidth < 768) {
-      document.getElementById('sidebar').classList.add('-translate-x-full');
-      document.getElementById('sidebar-overlay').classList.add('hidden');
-    }
-  }
-
-  function navigateTo(modId, secId) {
-    activeModuleId = modId;
-    activeSectionId = secId;
-    renderMainContent();
-  }
-  function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('sidebar-overlay');
-    if (sidebar.classList.contains('-translate-x-full')) {
-      sidebar.classList.remove('-translate-x-full');
-      overlay.classList.remove('hidden');
-    } else {
-      sidebar.classList.add('-translate-x-full');
-      overlay.classList.add('hidden');
-    }
-  }
-  
-  window.selectQuizOption = function(qid, idx) {
-    if (!quizStates[qid]) quizStates[qid] = { submitted: false };
-    quizStates[qid].selected = idx;
-    renderMainContent();
-  }
-  window.submitQuiz = function(qid) {
-    if (!quizStates[qid]) return;
-    quizStates[qid].submitted = true;
-    renderMainContent();
-  }
-  
-  document.addEventListener('DOMContentLoaded', () => { renderMainContent(); });
-</script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderMainContent();
+    });
+  </script>
 
 </body>
 </html>
